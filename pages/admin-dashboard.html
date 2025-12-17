@@ -1,0 +1,3925 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Restaurant Management</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #1a1a1a;
+            color: #ffffff;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+
+        .admin-container {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background: linear-gradient(180deg, #2a2a2a 0%, #1a1a1a 100%);
+            border-right: 1px solid #444;
+            padding: 25px 0;
+            overflow-y: auto;
+            box-shadow: 2px 0 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .sidebar-header {
+            padding: 0 25px 25px;
+            border-bottom: 1px solid #444;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .sidebar-header h2 {
+            font-size: 22px;
+            font-weight: 700;
+            color: #ffffff;
+            margin: 0;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 8px;
+        }
+
+        .sidebar-menu a {
+            display: block;
+            padding: 15px 25px;
+            color: #ccc;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+            border-radius: 0 25px 25px 0;
+            font-weight: 500;
+            position: relative;
+        }
+
+        .sidebar-menu a:hover {
+            background: rgba(99, 102, 241, 0.1);
+            color: #ffffff;
+            border-left-color: #6366f1;
+            transform: translateX(5px);
+        }
+
+        .sidebar-menu a.active {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: #ffffff;
+            border-left-color: #ffffff;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+
+        .sidebar-menu i {
+            margin-right: 12px;
+            width: 18px;
+            font-size: 16px;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%);
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #2a2a2a 0%, #333 100%);
+            padding: 20px 30px;
+            border-bottom: 1px solid #444;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #ffffff;
+            margin: 0;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .logout-btn {
+            background: #dc2626;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: #b91c1c;
+        }
+
+        /* Page Content Container */
+        .page-content {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+        }
+
+        .page {
+            display: block;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 35px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid #444;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 12px;
+            padding: 25px;
+        }
+
+        .page-header h2 {
+            font-size: 32px;
+            font-weight: 700;
+            color: #ffffff;
+            margin: 0;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-header p {
+            color: #aaa;
+            margin: 8px 0 0 0;
+            font-size: 16px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        /* Calendar Header */
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .calendar-title {
+            font-size: 28px;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .calendar-nav {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .nav-btn {
+            background: #333;
+            color: #ffffff;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            background: #444;
+        }
+
+        .current-date {
+            font-size: 18px;
+            font-weight: 500;
+            color: #ccc;
+            min-width: 200px;
+            text-align: center;
+        }
+
+        /* Calendar Grid */
+        .calendar-grid {
+            background: #2a2a2a;
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid #333;
+        }
+
+        .calendar-weekdays {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 1px;
+            margin-bottom: 10px;
+        }
+
+        .weekday {
+            padding: 15px 10px;
+            text-align: center;
+            font-weight: 600;
+            color: #888;
+            font-size: 14px;
+            background: #333;
+            border-radius: 6px;
+        }
+
+        .calendar-days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 1px;
+            min-height: 300px;
+        }
+
+        .calendar-day {
+            min-height: 120px;
+            padding: 10px;
+            background: #1a1a1a;
+            border-radius: 6px;
+            border: 1px solid #333;
+            position: relative;
+            transition: background-color 0.3s ease;
+        }
+
+        .calendar-day:hover {
+            background: #222;
+        }
+
+        .calendar-day.other-month {
+            opacity: 0.3;
+        }
+
+        .calendar-day.today {
+            background: #2d3748;
+            border-color: #6366f1;
+        }
+
+        .calendar-day.has-bookings {
+            background: #1e40af;
+            border-color: #3b82f6;
+        }
+
+        .calendar-day.has-bookings:hover {
+            background: #1d4ed8;
+        }
+
+        .day-number {
+            font-size: 16px;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 8px;
+        }
+
+        .day-events {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .event {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: opacity 0.3s ease;
+        }
+
+        .event:hover {
+            opacity: 0.8;
+        }
+
+        .event.all-day {
+            background: #7c3aed;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .event.timed {
+            background: #ec4899;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .event-icon {
+            width: 12px;
+            height: 12px;
+        }
+
+        .more-bookings {
+            color: #888;
+            font-size: 12px;
+            text-align: center;
+            margin-top: 4px;
+            opacity: 0.7;
+        }
+
+        /* Day View */
+        .day-view {
+            display: none;
+            background: #2a2a2a;
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid #333;
+            margin-top: 20px;
+        }
+
+        .day-view.active {
+            display: block;
+        }
+
+        .day-view-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #333;
+        }
+
+        .day-view-nav {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .day-view-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .back-to-calendar {
+            background: #333;
+            color: #ffffff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+        }
+
+        .back-to-calendar:hover {
+            background: #444;
+        }
+
+        .day-summary {
+            margin-bottom: 20px;
+            padding: 20px;
+            background: #333;
+            border-radius: 8px;
+        }
+
+        .day-stats {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .stat-label {
+            color: #ccc;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .stat-value.confirmed {
+            color: #10b981;
+        }
+
+        .stat-value.pending {
+            color: #f59e0b;
+        }
+
+        .all-day-events {
+            margin-bottom: 20px;
+        }
+
+        .all-day-event {
+            background: #7c3aed;
+            color: white;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 500;
+        }
+
+        .time-slots {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .time-slot {
+            display: flex;
+            min-height: 60px;
+            border-bottom: 1px solid #333;
+            align-items: center;
+        }
+
+        .time-label {
+            width: 80px;
+            padding: 10px;
+            color: #888;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .time-content {
+            flex: 1;
+            padding: 10px;
+            position: relative;
+        }
+
+        .booking-block {
+            background: #1e40af;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            margin: 2px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: opacity 0.3s ease;
+            border-left: 3px solid #3b82f6;
+        }
+
+        .booking-block:hover {
+            opacity: 0.8;
+        }
+
+        .booking-block.highlighted {
+            background: #06b6d4;
+            border-left-color: #0891b2;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #2a2a2a;
+            padding: 30px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 500px;
+            border: 1px solid #333;
+            max-height: 90vh;
+            overflow-y: auto;
+            margin: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .modal-content {
+                width: 95%;
+                max-width: none;
+                padding: 20px;
+                margin: 10px;
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            color: #888;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close-modal:hover {
+            color: #ffffff;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #ccc;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            background: #1a1a1a;
+            border: 1px solid #444;
+            border-radius: 8px;
+            color: #ffffff;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        /* Progress and file info styles removed - simplified interface */
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-group input:disabled,
+        .form-group textarea:disabled,
+        .form-group select:disabled,
+        .form-group input:readonly,
+        .form-group textarea:readonly,
+        .form-group select:readonly {
+            background: #0f0f0f;
+            color: #888;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+        }
+
+        @media (max-width: 768px) {
+            .modal-actions {
+                flex-direction: column;
+            }
+
+            .modal-actions button {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #4b5563, #6b7280);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(75, 85, 99, 0.3);
+        }
+
+        .btn-secondary:hover {
+            background: linear-gradient(135deg, #6b7280, #9ca3af);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(75, 85, 99, 0.4);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #dc2626, #ef4444);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+        }
+
+        .btn-danger:hover {
+            background: linear-gradient(135deg, #ef4444, #f87171);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(220, 38, 38, 0.4);
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, #ff9800, #f57c00);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            margin-left: 10px;
+        }
+
+        .btn-warning:hover {
+            background: linear-gradient(135deg, #f57c00, #e65100);
+            transform: translateY(-1px);
+        }
+
+        .btn-success {
+            background: #059669;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
+            margin-left: 10px;
+        }
+
+        .btn-success:hover {
+            background: #047857;
+        }
+
+        .status-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .status-confirmed {
+            color: #10b981;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* Analytics Page Styles */
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: #2a2a2a;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #333;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .stat-icon {
+            font-size: 32px;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #333;
+            border-radius: 12px;
+        }
+
+        .stat-content {
+            flex: 1;
+        }
+
+        .stat-number {
+            font-size: 24px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #888;
+        }
+
+
+        /* Customers Page Styles */
+        .customers-table {
+            background: #2a2a2a;
+            border-radius: 12px;
+            border: 1px solid #333;
+            overflow: hidden;
+        }
+
+        /* Enhanced Customer Management Styles */
+        .customers-table {
+            margin-top: 20px;
+        }
+
+        .customers-table table {
+            width: 100%;
+            border-collapse: collapse;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .customers-table th {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: #ffffff;
+            font-weight: 600;
+            font-size: 14px;
+            padding: 16px;
+            text-align: left;
+            border: none;
+        }
+
+        .customers-table td {
+            padding: 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            color: #e5e7eb;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .customers-table tbody tr {
+            transition: all 0.3s ease;
+        }
+
+        .customers-table tbody tr:hover {
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateY(-1px);
+        }
+
+        .customers-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .search-container {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .search-container input {
+            border: none;
+            background: transparent;
+            outline: none;
+        }
+
+        .search-container input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-small {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+
+        /* Menu Page Styles */
+        .menu-categories {
+            background: #2a2a2a;
+            border-radius: 12px;
+            border: 1px solid #333;
+            overflow: hidden;
+        }
+
+        /* PDF Management Styles */
+        .pdf-section {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .pdf-section:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .upload-btn {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .upload-btn:hover {
+            transform: translateY(-1px);
+        }
+
+        .upload-btn.uploading {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        .upload-btn.uploading::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: loading-shimmer 1.5s infinite;
+        }
+
+        @keyframes loading-shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .btn-small {
+            padding: 6px 12px !important;
+            font-size: 12px !important;
+            border-radius: 6px !important;
+        }
+
+        .pdf-item {
+            animation: fadeInUp 0.3s ease-out;
+        }
+
+        .pdf-item:nth-child(even) {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .active-badge {
+            background: #4CAF50 !important;
+            color: white !important;
+            padding: 4px 8px !important;
+            border-radius: 12px !important;
+            font-size: 10px !important;
+            font-weight: bold !important;
+            text-transform: uppercase !important;
+        }
+
+        .category-tabs {
+            display: flex;
+            background: linear-gradient(135deg, #2a2a2a 0%, #333 100%);
+            border-radius: 12px 12px 0 0;
+            border: 1px solid #444;
+            border-bottom: none;
+            overflow: hidden;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 18px 25px;
+            background: none;
+            border: none;
+            color: #888;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .tab-btn:hover {
+            background: rgba(99, 102, 241, 0.1);
+            color: #ffffff;
+            border-bottom-color: #6366f1;
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: #ffffff;
+            border-bottom-color: #ffffff;
+            box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+        }
+
+        .menu-section-header {
+            padding: 25px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 12px 12px 0 0;
+            border: 1px solid #444;
+            border-bottom: none;
+        }
+
+        .menu-section-header h3 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #ffffff;
+            margin: 0 0 8px 0;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .menu-section-header p {
+            color: #aaa;
+            margin: 0;
+            font-size: 16px;
+        }
+
+        .menu-items-grid {
+            padding: 25px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
+            background: rgba(255, 255, 255, 0.01);
+            border-radius: 0 0 12px 12px;
+            border: 1px solid #444;
+            border-top: none;
+            min-height: 200px;
+        }
+
+        .menu-item-card {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+            padding: 25px;
+            border-radius: 16px;
+            border: 1px solid #333;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .menu-item-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #6366f1, #8b5cf6);
+        }
+
+        .menu-item-card:hover {
+            border-color: #6366f1;
+            transform: translateY(-4px);
+            box-shadow: 0 8px 32px rgba(99, 102, 241, 0.2);
+        }
+
+        .menu-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .menu-item-name {
+            font-size: 20px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 5px;
+        }
+
+        .menu-item-title {
+            font-size: 14px;
+            color: #888;
+            font-style: italic;
+            margin-bottom: 10px;
+        }
+
+        .menu-item-price {
+            font-size: 18px;
+            font-weight: 700;
+            color: #10b981;
+            background: rgba(16, 185, 129, 0.1);
+            padding: 4px 8px;
+            border-radius: 6px;
+        }
+
+        .menu-item-category {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: #ffffff;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .menu-item-description {
+            color: #ccc;
+            font-size: 14px;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .menu-item-status {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* PDF Display Styles */
+        .menu-item-pdf {
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid #6366f1;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .pdf-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .pdf-info i {
+            font-size: 20px;
+            color: #6366f1;
+        }
+
+        .pdf-name {
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .pdf-size {
+            color: #888;
+            font-size: 14px;
+        }
+
+        .pdf-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-small {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .status-available {
+            background: #059669;
+            color: white;
+        }
+
+        .status-unavailable {
+            background: #dc2626;
+            color: white;
+        }
+
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .admin-container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+
+            .sidebar-header h2 {
+                font-size: 20px;
+            }
+
+            .header {
+                padding: 15px 20px;
+            }
+
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .page-header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .page-header h2 {
+                font-size: 28px;
+            }
+
+            .header-actions {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+
+            .category-tabs {
+                flex-direction: column;
+            }
+
+            .tab-btn {
+                padding: 15px;
+                border-bottom: 1px solid #444;
+                border-left: none;
+                border-radius: 0;
+            }
+
+            .tab-btn:last-child {
+                border-bottom: none;
+            }
+
+            .menu-items-grid {
+                grid-template-columns: 1fr;
+                padding: 20px;
+                gap: 20px;
+            }
+
+            .menu-item-card {
+                padding: 20px;
+            }
+
+            .btn {
+                padding: 10px 20px;
+                font-size: 13px;
+            }
+            .btn {
+                border-bottom: 1px solid #333;
+            }
+
+            .page-content {
+                padding: 20px;
+            }
+            }
+
+            .calendar-days {
+                grid-template-columns: repeat(7, 1fr);
+            }
+
+            .calendar-day {
+                min-height: 80px;
+                padding: 8px;
+            }
+
+            .day-number {
+                font-size: 14px;
+            }
+
+            .event {
+                font-size: 10px;
+                padding: 2px 6px;
+            }
+
+            .analytics-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .menu-items-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .settings-actions {
+                flex-direction: column;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2>Admin Panel</h2>
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="#" onclick="showPage('calendar')" class="active"><i>📅</i> Calendar</a></li>
+                <li><a href="#" onclick="showPage('analytics')"><i>📊</i> Analytics</a></li>
+                <li><a href="#" onclick="showPage('customers')"><i>👥</i> Customers</a></li>
+                <li><a href="#" onclick="showPage('pdfs')"><i>📄</i> PDF Menus</a></li>
+                <li><a href="#" onclick="showPage('settings')"><i>⚙️</i> Timeslot Management</a></li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Header -->
+            <div class="header">
+                <h1>Restaurant Management</h1>
+                <div class="header-actions">
+                    <button class="logout-btn" onclick="logout()">Logout</button>
+                </div>
+            </div>
+
+            <!-- Page Content Container -->
+            <div class="page-content" id="pageContent">
+                <!-- Calendar Page -->
+                <div class="page" id="calendarPage">
+                    <!-- Calendar Header -->
+                    <div class="calendar-header">
+                        <div class="calendar-title">Calendar</div>
+                        <div class="calendar-nav">
+                            <button class="nav-btn" onclick="previousMonth()">‹</button>
+                            <div class="current-date" id="currentDate">September 2025</div>
+                            <button class="nav-btn" onclick="nextMonth()">›</button>
+                        </div>
+                    </div>
+
+                    <!-- Calendar Grid -->
+                    <div class="calendar-grid">
+                        <div class="calendar-weekdays">
+                            <div class="weekday">Sun</div>
+                            <div class="weekday">Mon</div>
+                            <div class="weekday">Tue</div>
+                            <div class="weekday">Wed</div>
+                            <div class="weekday">Thu</div>
+                            <div class="weekday">Fri</div>
+                            <div class="weekday">Sat</div>
+                        </div>
+                        <div class="calendar-days" id="calendarDays">
+                            <!-- Calendar days will be generated by JavaScript -->
+                        </div>
+                    </div>
+
+                    <!-- Day View -->
+                    <div class="day-view" id="dayView">
+                        <div class="day-view-header">
+                            <div class="day-view-title" id="dayViewTitle">Monday, September 1, 2025</div>
+                            <div class="day-view-nav">
+                                <button class="nav-btn" onclick="previousMonthFromDayView()">‹</button>
+                                <div class="current-date" id="dayViewCurrentDate">September 2025</div>
+                                <button class="nav-btn" onclick="nextMonthFromDayView()">›</button>
+                                <button class="back-to-calendar" onclick="showCalendar()">Back to Calendar</button>
+                            </div>
+                        </div>
+
+                        <div class="day-summary">
+                            <div class="day-stats">
+                                <div class="stat-item">
+                                    <span class="stat-label">Total Bookings:</span>
+                                    <span class="stat-value" id="dayTotalBookings">0</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Confirmed:</span>
+                                    <span class="stat-value confirmed" id="dayConfirmedBookings">0</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Pending:</span>
+                                    <span class="stat-value pending" id="dayPendingBookings">0</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="all-day-events" id="allDayEvents">
+                            <!-- All-day events will be shown here -->
+                        </div>
+
+                        <div class="time-slots" id="timeSlots">
+                            <!-- Time slots will be generated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Analytics Page -->
+                <div class="page" id="analyticsPage" style="display: none;">
+                    <div class="page-header">
+                        <h2>Analytics Dashboard</h2>
+                        <p>Restaurant performance metrics and insights</p>
+                    </div>
+                    
+                    <div class="analytics-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">📅</div>
+                            <div class="stat-content">
+                                <div class="stat-number" id="totalBookings">Loading...</div>
+                                <div class="stat-label">Total Bookings</div>
+                            </div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-icon">👥</div>
+                            <div class="stat-content">
+                                <div class="stat-number" id="avgPartySize">Loading...</div>
+                                <div class="stat-label">Avg Party Size</div>
+                            </div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-icon">⏰</div>
+                            <div class="stat-content">
+                                <div class="stat-number" id="peakHours">Loading...</div>
+                                <div class="stat-label">Peak Hours</div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- Customers Page -->
+                <div class="page" id="customersPage" style="display: none;">
+                    <div class="page-header">
+                        <h2>👥 Customer Management</h2>
+                        <p>Manage your restaurant's customer database and track visit history</p>
+                    </div>
+                    
+                    <!-- Customer Management Controls -->
+                    <div style="margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+                        <div style="display: flex; gap: 15px; align-items: center;">
+                            <div class="search-container" style="display: flex; align-items: center; gap: 8px;">
+                                <input type="text" id="customerSearch" placeholder="Search customers..." style="padding: 8px 12px; border: 1px solid #444; border-radius: 6px; background: rgba(255, 255, 255, 0.05); color: #fff; font-size: 14px; min-width: 200px;">
+                                <button class="btn btn-secondary" onclick="filterCustomers()">
+                                    <i>🔍</i> Search
+                                </button>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <span id="customerCount" style="color: #ccc; font-size: 14px;">Total: 0 customers</span>
+                        </div>
+                    </div>
+
+                    <div class="customers-table" style="background: rgba(255, 255, 255, 0.02); border-radius: 12px; border: 1px solid #444; overflow: hidden;">
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <thead>
+                                <tr style="background: rgba(255, 255, 255, 0.05);">
+                                    <th style="padding: 16px; text-align: left; color: #ffffff; font-weight: 600; border-bottom: 1px solid #444;">Name</th>
+                                    <th style="padding: 16px; text-align: left; color: #ffffff; font-weight: 600; border-bottom: 1px solid #444;">Email</th>
+                                    <th style="padding: 16px; text-align: left; color: #ffffff; font-weight: 600; border-bottom: 1px solid #444;">Phone</th>
+                                    <th style="padding: 16px; text-align: center; color: #ffffff; font-weight: 600; border-bottom: 1px solid #444;">Visits</th>
+                                    <th style="padding: 16px; text-align: left; color: #ffffff; font-weight: 600; border-bottom: 1px solid #444;">Last Visit</th>
+                                </tr>
+                            </thead>
+                            <tbody id="customersTableBody" style="background: rgba(255, 255, 255, 0.02);">
+                                <!-- Customer rows will be generated by JavaScript -->
+                            </tbody>
+                        </table>
+                </div>
+
+                    </div>
+                    
+
+                <!-- Settings Page -->
+                <div class="page" id="settingsPage" style="display: none;">
+                    <div class="page-header">
+                        <h2>⚙ Settings</h2>
+                        <p>Manage restaurant info and time slot availability</p>
+                    </div>
+
+                    <!-- Make the calendar picker icon more visible (gold tone) -->
+                    <style>
+                        #settingsPage input[type="date"]::-webkit-calendar-picker-indicator {
+                            filter: invert(71%) sepia(13%) saturate(694%) hue-rotate(355deg) brightness(92%) contrast(90%);
+                            opacity: 1;
+                            cursor: pointer;
+                        }
+                    </style>
+
+                    <div style="display: grid; gap: 16px; margin-bottom: 20px;">
+                        <div class="form-group">
+                            <label>Select Date for Time Slot Overrides</label>
+                            <input type="date" id="settingsDate">
+                            <small style="color: #888; display: block; margin-top: 6px;">Leave empty to edit global defaults i.e. for all dates</small>
+                        </div>
+                        <div class="settings-actions" style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                            <button class="btn btn-secondary" id="useGlobalBtn"><i>🌐</i>Global Defaults (for all dates)</button>
+                            <button class="btn btn-secondary" id="reloadSlotsBtn"><i>🔄</i> Reload</button>
+                            <button class="btn btn-primary" id="saveBtn"><i>💾</i> Save</button>
+                        </div>
+                    </div>
+
+                    <!-- Loading indicator for time slot fetch -->
+                    <div id="timeSlotsLoading" style="display: none; padding: 12px; margin: 10px 0; border: 1px dashed #666; border-radius: 8px; color: #ccc; background: rgba(255,255,255,0.03);">
+                        ⏳ Loading time slots...
+                    </div>
+
+                    <div class="time-slot-management" style="display: none;">
+                        <h3 style="margin-bottom: 10px;">Time Slot Availability</h3>
+                        <div id="timeSlotsContainer"></div>
+                    </div>
+                </div>
+
+                <!-- PDF Menus Page -->
+                <div class="page" id="pdfsPage" style="display: none;">
+                    <div class="page-header">
+                        <h2>📄 PDF Menu Management</h2>
+                        <p>Upload, organize, and manage your restaurant's PDF menus for food and wine</p>
+                    </div>
+                    
+                    <div class="pdf-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 25px; margin-top: 30px;">
+                        <!-- Food Menu PDFs Section -->
+                        <div class="pdf-section" style="background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%); border-radius: 16px; border: 1px solid #444; padding: 25px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+                            <div class="section-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid #6366f1;">
+                                <h3 style="margin: 0; color: #ffffff; font-size: 18px; font-weight: 600;">🍽️ Food Menu PDFs</h3>
+                                <div class="upload-status" id="foodUploadStatus" style="font-size: 12px; color: #888;"></div>
+                            </div>
+
+                            <div class="pdf-actions" style="margin-bottom: 20px;">
+                                <input type="file" id="foodMenuPdfUpload" accept="application/pdf" style="display: none;">
+                                <button class="btn btn-primary upload-btn" onclick="document.getElementById('foodMenuPdfUpload').click()" style="width: 100%; padding: 12px; font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">
+                                    <i>📄</i> Upload Food Menu PDF
+                                </button>
+                            </div>
+
+                            <div class="pdf-list" id="foodPdfList" style="max-height: 400px; overflow-y: auto; padding-right: 5px;">
+                                <!-- Food PDFs will be loaded here -->
+                                <div class="no-pdfs-message" style="text-align: center; padding: 40px 20px; color: #888; font-style: italic;">
+                                    <i style="font-size: 48px; margin-bottom: 15px; display: block;">📄</i>
+                                    No food menu PDFs uploaded yet.
+                                    <br><small style="font-size: 12px;">Upload your first food menu PDF to get started!</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Wine Menu PDFs Section -->
+                        <div class="pdf-section" style="background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%); border-radius: 16px; border: 1px solid #444; padding: 25px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+                            <div class="section-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid #8b5cf6;">
+                                <h3 style="margin: 0; color: #ffffff; font-size: 18px; font-weight: 600;">🍷 Wine Menu PDFs</h3>
+                                <div class="upload-status" id="wineUploadStatus" style="font-size: 12px; color: #888;"></div>
+                            </div>
+
+                            <div class="pdf-actions" style="margin-bottom: 20px;">
+                                <input type="file" id="wineMenuPdfUpload" accept="application/pdf" style="display: none;">
+                                <button class="btn btn-primary upload-btn" onclick="document.getElementById('wineMenuPdfUpload').click()" style="width: 100%; padding: 12px; font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">
+                                    <i>📄</i> Upload Wine Menu PDF
+                                </button>
+                            </div>
+
+                            <div class="pdf-list" id="winePdfList" style="max-height: 400px; overflow-y: auto; padding-right: 5px;">
+                                <!-- Wine PDFs will be loaded here -->
+                                <div class="no-pdfs-message" style="text-align: center; padding: 40px 20px; color: #888; font-style: italic;">
+                                    <i style="font-size: 48px; margin-bottom: 15px; display: block;">📄</i>
+                                    No wine menu PDFs uploaded yet.
+                                    <br><small style="font-size: 12px;">Upload your first wine menu PDF to get started!</small>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+
+                </div>
+
+                    </div>
+
+        </div>
+    </div>
+
+    <!-- Modal for Booking Details -->
+    <div class="modal" id="bookingModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title" id="modalTitle">Booking Details</div>
+                <button class="close-modal" onclick="closeModal()">&times;</button>
+            </div>
+            <div id="modalBody">
+                <!-- Modal content will be generated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for PDF Upload -->
+    <div class="modal" id="pdfUploadModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Upload Menu PDF</div>
+                <button class="close-modal" onclick="closePdfModal()">&times;</button>
+            </div>
+            <div id="pdfModalBody">
+                <div class="form-group">
+                    <label>Select Menu Item</label>
+                    <select id="pdfMenuItem" required>
+                        <option value="">Choose a menu item...</option>
+                        <!-- Menu items will be populated by JavaScript -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Upload PDF File</label>
+                    <input type="file" id="pdfFileInput" accept=".pdf" required>
+                    <div id="fileInfo" style="margin-top: 10px; font-size: 14px; color: #888;"></div>
+                </div>
+                <div class="modal-actions">
+                    <button class="btn btn-primary" onclick="uploadPdfWithDetails()">Upload PDF</button>
+                    <button class="btn btn-secondary" onclick="closePdfModal()">Cancel</button>
+                </div>
+              </div>
+        </div>
+    </div>
+
+    <script>
+        // Restaurant Management System - Admin Dashboard
+        const API_BASE_URL = '/api';
+        
+        let currentDate = new Date(); // Current month and year
+        let selectedDate = null;
+        let currentPage = 'calendar';
+        let bookings = [];
+        let customers = [];
+        let menuItems = [];
+        let analytics = {};
+        let restaurantSettings = {};
+        let refreshInterval = null; // For auto-refresh functionality
+        let currentUser = null; // Store current user info
+        let settingsInitBound = false; // Prevent duplicate listeners for Settings page
+
+        // Lightweight notification helper (used by settings functions)
+        function showNotification(message, type = 'info') {
+            try {
+                const div = document.createElement('div');
+                div.style.position = 'fixed';
+                div.style.top = '20px';
+                div.style.right = '20px';
+                div.style.zIndex = '9999';
+                div.style.padding = '12px 16px';
+                div.style.borderRadius = '8px';
+                div.style.color = '#fff';
+                div.style.background = type === 'success' ? '#059669' : type === 'error' ? '#dc2626' : type === 'warning' ? '#f59e0b' : '#374151';
+                div.textContent = message;
+                document.body.appendChild(div);
+                setTimeout(() => div.remove(), 3000);
+            } catch (_) {}
+        }
+
+        function generateCalendar() {
+            const calendarDays = document.getElementById('calendarDays');
+            const currentMonth = currentDate.getMonth();
+            const currentYear = currentDate.getFullYear();
+
+            // Update current date display
+            document.getElementById('currentDate').textContent =
+                currentDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+
+            // Clear calendar
+            calendarDays.innerHTML = '';
+
+            // Get first day of month and number of days
+            const firstDay = new Date(currentYear, currentMonth, 1);
+            const lastDay = new Date(currentYear, currentMonth + 1, 0);
+            const daysInMonth = lastDay.getDate();
+            const startingDayOfWeek = firstDay.getDay();
+
+            // Calculate number of rows needed for current month only
+            const totalCells = startingDayOfWeek + daysInMonth;
+            const rowsNeeded = Math.ceil(totalCells / 7);
+            calendarDays.style.gridTemplateRows = `repeat(${rowsNeeded}, 1fr)`;
+
+            // Add empty cells for days before the first day of the month
+            for (let i = 0; i < startingDayOfWeek; i++) {
+                const emptyDay = document.createElement('div');
+                emptyDay.className = 'calendar-day empty-day';
+                calendarDays.appendChild(emptyDay);
+            }
+
+            // Add days of the current month
+            for (let day = 1; day <= daysInMonth; day++) {
+                const date = new Date(currentYear, currentMonth, day);
+                const isToday = date.toDateString() === new Date().toDateString();
+                const dayElement = createDayElement(day, false, date, isToday);
+                calendarDays.appendChild(dayElement);
+            }
+        }
+
+        function createDayElement(dayNumber, isOtherMonth, date, isToday = false) {
+            const dayElement = document.createElement('div');
+            dayElement.className = 'calendar-day';
+            if (isOtherMonth) dayElement.classList.add('other-month');
+            if (isToday) dayElement.classList.add('today');
+
+            const dateString = date.toISOString().split('T')[0];
+            // Map API bookings into calendar events for the given date
+            const dayEvents = (bookings || []).filter(b => b.date === dateString).map(b => ({
+                type: 'timed',
+                title: `${b.customerName} (${b.guests})`,
+                time: b.time,
+                customerName: b.customerName,
+                customerEmail: b.customerEmail,
+                customerPhone: b.customerPhone,
+                guests: b.guests,
+                specialRequests: b.specialRequests,
+                tableNumber: b.tableNumber,
+                status: b.status,
+                id: b.id
+            }));
+
+            // Add has-bookings class if there are bookings
+            if (dayEvents.length > 0) {
+                dayElement.classList.add('has-bookings');
+            }
+
+            // Limit to 3 bookings in calendar view
+            const displayEvents = dayEvents.slice(0, 3);
+            const hasMoreBookings = dayEvents.length > 3;
+
+            dayElement.innerHTML = `
+                <div class="day-number">${dayNumber}</div>
+                <div class="day-events">
+                    ${displayEvents.map(event => `
+                        <div class="event ${event.type}" onclick="event.stopPropagation(); showDayView(new Date('${dateString}'));">
+                            <span class="event-icon">${event.type === 'all-day' ? '📅' : '⏰'}</span>
+                            <span>${event.title}</span>
+                        </div>
+                    `).join('')}
+                    ${hasMoreBookings ? '<div class="more-bookings">...</div>' : ''}
+                </div>
+            `;
+
+            dayElement.addEventListener('click', () => {
+                if (!isOtherMonth) {
+                    showDayView(date);
+                }
+            });
+
+            return dayElement;
+        }
+
+        function showDayView(date) {
+            selectedDate = date;
+            document.querySelector('.calendar-grid').style.display = 'none';
+            document.querySelector('.calendar-nav').style.display = 'none';
+            document.getElementById('dayView').classList.add('active');
+
+            // Update day view title
+            document.getElementById('dayViewTitle').textContent =
+                date.toLocaleDateString('en-US', {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+
+            // Update day view current date display
+            document.getElementById('dayViewCurrentDate').textContent =
+                date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+
+            // Calculate and display day statistics
+            updateDayStatistics(date);
+
+            // Generate time slots
+            generateTimeSlots(date);
+        }
+
+        function updateDayStatistics(date) {
+            const dateString = date.toISOString().split('T')[0];
+            const dayBookings = (bookings || []).filter(b => (b.date || '').startsWith(dateString));
+
+            const totalBookings = dayBookings.length;
+            const confirmedBookings = dayBookings.filter(b => b.status === 'confirmed').length;
+            const pendingBookings = dayBookings.filter(b => b.status === 'pending').length;
+
+            document.getElementById('dayTotalBookings').textContent = totalBookings;
+            document.getElementById('dayConfirmedBookings').textContent = confirmedBookings;
+            document.getElementById('dayPendingBookings').textContent = pendingBookings;
+        }
+
+        function generateTimeSlots(date) {
+            const timeSlots = document.getElementById('timeSlots');
+            const dateString = date.toISOString().split('T')[0];
+            const dayBookings = (bookings || []).filter(b => (b.date || '').startsWith(dateString));
+
+            timeSlots.innerHTML = '';
+
+            // Generate hourly slots from 12 AM to 11 PM
+            for (let hour = 0; hour < 24; hour++) {
+                const timeSlot = document.createElement('div');
+                timeSlot.className = 'time-slot';
+
+                const timeLabel = document.createElement('div');
+                timeLabel.className = 'time-label';
+                timeLabel.textContent = formatHour(hour);
+
+                const timeContent = document.createElement('div');
+                timeContent.className = 'time-content';
+
+                // Add bookings for this hour
+                const hourBookings = dayBookings.filter(booking => {
+                    if (!booking.time) return false;
+                    const bookingHour = getHourFromTime(booking.time);
+                    return bookingHour === hour;
+                });
+
+                hourBookings.forEach(booking => {
+                    const bookingBlock = document.createElement('div');
+                    bookingBlock.className = 'booking-block';
+                    const title = `${booking.customerName} (${booking.guests})`;
+                    bookingBlock.textContent = `${title} (${booking.time})`;
+                    bookingBlock.onclick = () => showBookingDetails(dateString, title);
+                    timeContent.appendChild(bookingBlock);
+                });
+
+                timeSlot.appendChild(timeLabel);
+                timeSlot.appendChild(timeContent);
+                timeSlots.appendChild(timeSlot);
+            }
+        }
+
+        function formatHour(hour) {
+            if (hour === 0) return '12 AM';
+            if (hour < 12) return `${hour} AM`;
+            if (hour === 12) return '12 PM';
+            return `${hour - 12} PM`;
+        }
+
+        function getHourFromTime(timeString) {
+            if (!timeString) return 0;
+
+            // Handle different time formats
+            let hour = 0;
+
+            if (timeString.includes(':')) {
+                // Format like "19:00:00" or "7:30 PM"
+                const timeMatch = timeString.match(/(\d{1,2}):(\d{2})/);
+                if (timeMatch) {
+                    hour = parseInt(timeMatch[1]);
+
+                    // Convert 12-hour format to 24-hour
+                    if (timeString.includes('PM') && hour !== 12) {
+                        hour += 12;
+                    } else if (timeString.includes('AM') && hour === 12) {
+                        hour = 0;
+                    }
+                }
+            } else {
+                // Handle other formats if needed
+                hour = 0;
+            }
+
+            return hour;
+        }
+
+        function showCalendar() {
+            document.querySelector('.calendar-grid').style.display = 'block';
+            document.querySelector('.calendar-nav').style.display = 'flex';
+            document.getElementById('dayView').classList.remove('active');
+        }
+
+        function previousMonth() {
+            // If we have a selected date, try to keep the same day in the previous month
+            if (selectedDate) {
+                const selectedDay = selectedDate.getDate();
+                const currentYear = currentDate.getFullYear();
+                const currentMonth = currentDate.getMonth();
+                const newDate = new Date(currentYear, currentMonth - 1, selectedDay);
+                
+                // Check if the day exists in the previous month
+                if (newDate.getMonth() === currentMonth - 1) {
+                    selectedDate = newDate;
+                } else {
+                    // If day doesn't exist, use the last day of the previous month
+                    selectedDate = new Date(currentYear, currentMonth, 0);
+                }
+            }
+            
+            currentDate.setMonth(currentDate.getMonth() - 1);
+            generateCalendar();
+            
+            // If we had a selected date, update the day view
+            if (selectedDate) {
+                generateTimeSlots(selectedDate);
+            }
+        }
+
+        function nextMonth() {
+            // If we have a selected date, try to keep the same day in the next month
+            if (selectedDate) {
+                const selectedDay = selectedDate.getDate();
+                const currentYear = currentDate.getFullYear();
+                const currentMonth = currentDate.getMonth();
+                const newDate = new Date(currentYear, currentMonth + 1, selectedDay);
+                
+                // Check if the day exists in the next month
+                if (newDate.getMonth() === currentMonth + 1) {
+                    selectedDate = newDate;
+                } else {
+                    // If day doesn't exist, use the last day of the next month
+                    selectedDate = new Date(currentYear, currentMonth + 2, 0);
+                }
+            }
+            
+            currentDate.setMonth(currentDate.getMonth() + 1);
+            generateCalendar();
+            
+            // If we had a selected date, update the day view
+            if (selectedDate) {
+                generateTimeSlots(selectedDate);
+            }
+        }
+
+        function previousMonthFromDayView() {
+            // If we have a selected date, try to keep the same day in the previous month
+            if (selectedDate) {
+                const selectedDay = selectedDate.getDate();
+                const currentYear = currentDate.getFullYear();
+                const currentMonth = currentDate.getMonth();
+                const newDate = new Date(currentYear, currentMonth - 1, selectedDay);
+                
+                // Check if the day exists in the previous month
+                if (newDate.getMonth() === currentMonth - 1) {
+                    selectedDate = newDate;
+                } else {
+                    // If day doesn't exist, use the last day of the previous month
+                    selectedDate = new Date(currentYear, currentMonth, 0);
+                }
+            }
+            
+            currentDate.setMonth(currentDate.getMonth() - 1);
+            generateCalendar();
+            
+            // Update day view with new selected date
+            if (selectedDate) {
+                showDayView(selectedDate);
+            }
+        }
+
+        function nextMonthFromDayView() {
+            // If we have a selected date, try to keep the same day in the next month
+            if (selectedDate) {
+                const selectedDay = selectedDate.getDate();
+                const currentYear = currentDate.getFullYear();
+                const currentMonth = currentDate.getMonth();
+                const newDate = new Date(currentYear, currentMonth + 1, selectedDay);
+                
+                // Check if the day exists in the next month
+                if (newDate.getMonth() === currentMonth + 1) {
+                    selectedDate = newDate;
+                } else {
+                    // If day doesn't exist, use the last day of the next month
+                    selectedDate = new Date(currentYear, currentMonth + 2, 0);
+                }
+            }
+            
+            currentDate.setMonth(currentDate.getMonth() + 1);
+            generateCalendar();
+            
+            // Update day view with new selected date
+            if (selectedDate) {
+                showDayView(selectedDate);
+            }
+        }
+
+        function showBookingDetails(date, title) {
+            const modal = document.getElementById('bookingModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalBody = document.getElementById('modalBody');
+
+            // Find the actual booking data
+            const dateString = new Date(date).toISOString().split('T')[0];
+            console.log('Looking for booking:', { dateString, title, bookingsLength: bookings?.length });
+            const booking = bookings.find(b => {
+                const bookingTitle = `${b.customerName} (${b.guests})`;
+                console.log('Comparing:', bookingTitle, 'with', title, 'for date', b.date);
+                return b.date === dateString && bookingTitle === title;
+            });
+
+            modalTitle.textContent = `Booking: ${title}`;
+            console.log('Found booking:', booking);
+
+            if (booking) {
+                modalBody.innerHTML = `
+                    <div class="form-group">
+                        <label>Date</label>
+                        <input type="text" value="${new Date(booking.date).toLocaleDateString()}" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>Time</label>
+                        <input type="text" value="${booking.time}" id="bookingTime" readonly disabled>
+                    </div>
+                    <div class="form-group">
+                        <label>Customer Name</label>
+                        <input type="text" value="${booking.customerName}" id="customerName" readonly disabled>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" value="${booking.customerEmail || ''}" id="customerEmail" readonly disabled>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone</label>
+                        <input type="text" value="${booking.customerPhone || ''}" id="customerPhone" readonly disabled>
+                    </div>
+                    <div class="form-group">
+                        <label>Party Size</label>
+                        <input type="number" value="${booking.guests}" id="partySize" readonly disabled>
+                    </div>
+                    <div class="form-group">
+                        <label>Status</label>
+                        <div class="status-container">
+                            <input type="text" value="${booking.status || 'pending'}" readonly id="bookingStatus">
+                            ${booking.status !== 'confirmed' ? '<button class="btn btn-success" onclick="confirmBooking(\'' + booking.id + '\', \'' + booking.customerEmail + '\', \'' + booking.customerName + '\', \'' + booking.date + '\', \'' + booking.time + '\', ' + booking.guests + ', \'' + (booking.tableNumber || 'TBD') + '\')">Confirm Booking</button>' : '<span class="status-confirmed">✓ Confirmed</span>'}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Notes (Customer Only)</label>
+                        <textarea id="bookingNotes" readonly disabled>${booking.specialRequests || ''}</textarea>
+                    </div>
+                    <div class="modal-actions">
+                        <button class="btn btn-danger" onclick="deleteBooking('${date}', '${title}', ${booking.id})">Delete</button>
+                        <button class="btn btn-secondary" onclick="closeModal()">Close</button>
+                    </div>
+                `;
+            } else {
+                // Fallback for bookings not found in the data
+                modalBody.innerHTML = `
+                    <div class="form-group">
+                        <label>Date</label>
+                        <input type="text" value="${new Date(date).toLocaleDateString()}" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>Time</label>
+                        <input type="text" value="12-1AM" id="bookingTime" readonly disabled>
+                    </div>
+                    <div class="form-group">
+                        <label>Customer Name</label>
+                        <input type="text" value="${title}" id="customerName" readonly disabled>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" value="" id="customerEmail" readonly disabled>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone</label>
+                        <input type="text" value="" id="customerPhone" readonly disabled>
+                    </div>
+                    <div class="form-group">
+                        <label>Party Size</label>
+                        <input type="number" value="2" id="partySize" readonly disabled>
+                    </div>
+                    <div class="form-group">
+                        <label>Status</label>
+                        <input type="text" value="pending" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>Notes (Customer Only)</label>
+                        <textarea id="bookingNotes" readonly disabled></textarea>
+                    </div>
+                    <div class="modal-actions">
+                        <button class="btn btn-danger" onclick="deleteBooking('${date}', '${title}')">Delete</button>
+                        <button class="btn btn-secondary" onclick="closeModal()">Close</button>
+                    </div>
+                `;
+            }
+
+            modal.classList.add('active');
+        }
+
+
+        function deleteBooking(date, title) {
+            if (confirm('Are you sure you want to delete this booking?')) {
+                if (bookings[date]) {
+                    bookings[date] = bookings[date].filter(b => b.title !== title);
+                    if (bookings[date].length === 0) {
+                        delete bookings[date];
+                    }
+                }
+                closeModal();
+                generateCalendar();
+                if (selectedDate) {
+                    generateTimeSlots(selectedDate);
+                }
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('bookingModal').classList.remove('active');
+        }
+
+        function logout() {
+            // Clear stored user information
+            localStorage.removeItem('currentUser');
+            window.location.href = 'admin-login.html';
+        }
+
+        // Page tracking functions
+        async function saveCurrentPage(pageName) {
+            if (currentUser && currentUser.id) {
+                try {
+                    await fetch(`${API_BASE_URL}/user/page`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            userId: currentUser.id,
+                            page: pageName
+                        })
+                    });
+                } catch (error) {
+                    console.error('Error saving page:', error);
+                }
+            }
+        }
+
+        async function loadLastPage() {
+            if (currentUser && currentUser.id) {
+                try {
+                    const response = await fetch(`${API_BASE_URL}/user/page/${currentUser.id}`);
+                    if (response.ok) {
+                        const data = await response.json();
+                        return data.lastPage || 'calendar';
+                    }
+                } catch (error) {
+                    console.error('Error loading last page:', error);
+                }
+            }
+            return 'calendar'; // Default fallback
+        }
+
+        // Navigation Functions
+        async function showPage(pageName) {
+            // Hide all pages
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => page.style.display = 'none');
+
+            // Remove active class from all menu items
+            const menuItems = document.querySelectorAll('.sidebar-menu a');
+            menuItems.forEach(item => item.classList.remove('active'));
+
+            // Show selected page
+            document.getElementById(pageName + 'Page').style.display = 'block';
+
+            // Add active class to selected menu item
+            event.target.classList.add('active');
+
+            // Update current page
+            currentPage = pageName;
+
+            // Save current page to database
+            await saveCurrentPage(pageName);
+            
+            // Load page-specific data
+            switch(pageName) {
+                case 'analytics':
+                    loadAnalytics();
+                    break;
+                case 'customers':
+                    loadCustomersFromAPI();
+                    break;
+                case 'menu':
+                    console.log('Menu page accessed, checking menu items...');
+                    // Load menu items if not already loaded
+                    if (!menuItems || menuItems.length === 0) {
+                        console.log('Menu items not loaded, loading from server...');
+                        loadMenuItemsFromServer().then(() => {
+                            console.log('Menu items loaded from server, displaying:', menuItems?.length || 0);
+                            loadMenuItems();
+                        }).catch(error => {
+                            console.error('Error loading menu items:', error);
+                            // Still try to display even if loading failed
+                            loadMenuItems();
+                        });
+                    } else {
+                        console.log('Menu items already loaded, displaying:', menuItems.length);
+                        loadMenuItems();
+                    }
+                    break;
+            }
+        }
+
+        // Analytics Functions
+        async function loadAnalytics() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/analytics`);
+                const analyticsData = await response.json();
+
+                // Update the analytics display with real data
+                document.getElementById('totalBookings').textContent = analyticsData.totalBookings || '0';
+                document.getElementById('avgPartySize').textContent = analyticsData.averagePartySize || '0';
+                document.getElementById('peakHours').textContent = analyticsData.peakHours ? analyticsData.peakHours.join(', ') : 'No data';
+
+                // Store analytics data globally for other functions
+                analytics = analyticsData;
+
+                console.log('Analytics loaded:', analyticsData);
+            } catch (error) {
+                console.error('Error loading analytics:', error);
+                // Fallback to default values if API fails
+                document.getElementById('totalBookings').textContent = '0';
+                document.getElementById('avgPartySize').textContent = '0';
+                document.getElementById('peakHours').textContent = 'No data';
+            }
+        }
+
+        // Customer Functions
+
+        function showAddCustomerModal() {
+            const modal = document.getElementById('bookingModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalBody = document.getElementById('modalBody');
+
+            modalTitle.textContent = 'Add New Customer';
+            modalBody.innerHTML = `
+                <div class="form-group">
+                    <label>Name</label>
+                    <input type="text" id="customerName" placeholder="Enter customer name" readonly disabled>
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="customerEmail" placeholder="Enter email address" readonly disabled>
+                </div>
+                <div class="form-group">
+                    <label>Phone</label>
+                    <input type="text" id="customerPhone" placeholder="Enter phone number" readonly disabled>
+                </div>
+                <div class="modal-actions">
+                    <button class="btn btn-primary" onclick="addCustomer()">Add Customer</button>
+                    <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                </div>
+            `;
+
+            modal.classList.add('active');
+        }
+
+        function addCustomer() {
+            const name = document.getElementById('customerName').value;
+            const email = document.getElementById('customerEmail').value;
+            const phone = document.getElementById('customerPhone').value;
+
+            if (name && email && phone) {
+                const newCustomer = {
+                    id: customers.length + 1,
+                    name: name,
+                    email: email,
+                    phone: phone,
+                    visits: 0,
+                    lastVisit: 'Never'
+                };
+                customers.push(newCustomer);
+                loadCustomersFromAPI();
+                closeModal();
+            } else {
+                alert('Please fill in all fields');
+            }
+        }
+
+        function editCustomer(id) {
+            const customer = customers.find(c => c.id === id);
+            if (customer) {
+                const modal = document.getElementById('bookingModal');
+                const modalTitle = document.getElementById('modalTitle');
+                const modalBody = document.getElementById('modalBody');
+
+                modalTitle.textContent = 'Edit Customer';
+                modalBody.innerHTML = `
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input type="text" id="customerName" value="${customer.name}" readonly disabled>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="customerEmail" value="${customer.email}" readonly disabled>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone</label>
+                        <input type="text" id="customerPhone" value="${customer.phone}" readonly disabled>
+                    </div>
+                    <div class="modal-actions">
+                        <button class="btn btn-primary" onclick="updateCustomer(${id})">Update Customer</button>
+                        <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                    </div>
+                `;
+
+                modal.classList.add('active');
+            }
+        }
+
+        function updateCustomer(id) {
+            const customer = customers.find(c => c.id === id);
+            if (customer) {
+                customer.name = document.getElementById('customerName').value;
+                customer.email = document.getElementById('customerEmail').value;
+                customer.phone = document.getElementById('customerPhone').value;
+                loadCustomersFromAPI();
+                closeModal();
+            }
+        }
+
+        function deleteCustomer(id) {
+            if (confirm('Are you sure you want to delete this customer?')) {
+                customers = customers.filter(c => c.id !== id);
+                loadCustomersFromAPI();
+            }
+        }
+
+        // Menu Functions
+        async function loadMenuItemsFromServer() {
+            try {
+                console.log('Loading menu items from server...');
+                const response = await fetch(`${API_BASE_URL}/menu`);
+                console.log('Response status:', response.status);
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                const data = await response.json();
+                console.log('Raw response data:', data);
+                menuItems = data;
+                console.log('Menu items loaded from server:', menuItems?.length || 0);
+                console.log('Menu items with PDFs:', menuItems?.filter(item => item.pdfFile)?.length || 0);
+            } catch (error) {
+                console.error('Error loading menu items from server:', error);
+                menuItems = [];
+            }
+        }
+
+        function loadMenuItems(category = 'all') {
+            console.log('loadMenuItems called with category:', category);
+            console.log('Current menuItems length:', menuItems?.length || 0);
+            console.log('menuItems is array:', Array.isArray(menuItems));
+
+            const grid = document.getElementById('menuItemsGrid');
+            if (!grid) {
+                console.error('menuItemsGrid element not found!');
+                return;
+            }
+
+            grid.innerHTML = '';
+
+            // Ensure menuItems is an array
+            if (!Array.isArray(menuItems)) {
+                console.error('menuItems is not an array:', menuItems);
+                return;
+            }
+
+            let filteredItems = menuItems;
+            if (category !== 'all') {
+                // Handle special menu types (food_menu, wine_menu) and regular menu items
+                filteredItems = menuItems.filter(item => {
+                    // For special menu types, check if they match the category
+                    if (item.id === 'food_menu' || item.id === 'wine_menu') {
+                        return category.toLowerCase() === 'menu type' ||
+                               (item.category && item.category.toLowerCase().includes(category.toLowerCase()));
+                    }
+                    // For regular menu items, use the original logic
+                    return item.category && item.category.toLowerCase().includes(category.toLowerCase());
+                });
+            }
+
+            console.log('Filtered menu items for category "' + category + '":', filteredItems.length);
+            console.log('Items with PDFs:', filteredItems.filter(item => item.pdfFile).length);
+            
+            filteredItems.forEach((item, index) => {
+                console.log(`Processing item ${index + 1}:`, item.name, 'ID:', item.id, 'Has PDF:', !!item.pdfFile);
+                const card = document.createElement('div');
+                card.className = 'menu-item-card';
+
+                // Handle special menu types (food_menu, wine_menu)
+                const isSpecialMenu = item.id === 'food_menu' || item.id === 'wine_menu';
+
+                card.innerHTML = `
+                    <div class="menu-item-header">
+                        <div>
+                        <div class="menu-item-name">${item.name}</div>
+                            ${item.menuTitle ? `<div class="menu-item-title">📋 ${item.menuTitle}</div>` : ''}
+                        </div>
+                        <div class="menu-item-price">${isSpecialMenu ? 'N/A' : '$' + item.price}</div>
+                    </div>
+                    <div class="menu-item-category">${isSpecialMenu ? 'Menu Type' : item.category}</div>
+                    <div class="menu-item-description">${isSpecialMenu ? 'Menu category for organizing items' : item.description}</div>
+                    ${item.pdfFile ? `
+                        <div class="menu-item-pdf">
+                            <div class="pdf-info">
+                                <i>📄</i>
+                                <span class="pdf-name">${item.pdfFile.originalName}</span>
+                                <span class="pdf-size">(${formatFileSize(item.pdfFile.size)})</span>
+                            </div>
+                            <div class="pdf-actions">
+                                <button class="btn btn-primary btn-small" onclick="viewPdf('${item.id}')">View PDF</button>
+                                <button class="btn btn-danger btn-small" onclick="deletePdf('${item.id}')">Remove PDF</button>
+                            </div>
+                        </div>
+                    ` : ''}
+                    <div class="menu-item-status">
+                        <span class="status-badge status-available">Available</span>
+                        ${!isSpecialMenu ? `
+                        <div class="action-buttons">
+                            <button class="btn btn-primary btn-small" onclick="editMenuItem(${item.id})">Edit</button>
+                            <button class="btn btn-danger btn-small" onclick="deleteMenuItem(${item.id})">Delete</button>
+                        </div>
+                        ` : ''}
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Menu management with PDF upload functionality
+
+        // Helper function to format file size
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        // PDF Upload functionality
+        function showPdfUploadModal() {
+            const modal = document.getElementById('pdfUploadModal');
+            const menuItemSelect = document.getElementById('pdfMenuItem');
+
+            // Populate menu items dropdown with only Food Menu and Wine Menu options
+            menuItemSelect.innerHTML = '<option value="">Choose a menu item...</option>';
+
+            // Only show Food Menu and Wine Menu options (hardcoded for simplicity)
+            const menuOptions = [
+                { id: 'food_menu', name: 'Food Menu' },
+                { id: 'wine_menu', name: 'Wine Menu' }
+            ];
+
+            menuOptions.forEach(item => {
+                const option = document.createElement('option');
+                option.value = item.id;
+                option.textContent = `${item.name}`;
+                menuItemSelect.appendChild(option);
+            });
+
+            // Clear form
+            document.getElementById('pdfFileInput').value = '';
+            document.getElementById('fileInfo').textContent = '';
+
+            modal.classList.add('active');
+        }
+
+        function closePdfModal() {
+            document.getElementById('pdfUploadModal').classList.remove('active');
+        }
+
+        // Handle file input change to show file info
+        document.getElementById('pdfFileInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            const fileInfo = document.getElementById('fileInfo');
+
+            if (file) {
+                if (file.type !== 'application/pdf') {
+                    fileInfo.textContent = '❌ Please select a valid PDF file';
+                    fileInfo.style.color = '#ef4444';
+                    e.target.value = '';
+                } else {
+                    fileInfo.textContent = `✅ ${file.name} (${formatFileSize(file.size)})`;
+                    fileInfo.style.color = '#10b981';
+                }
+            } else {
+                fileInfo.textContent = '';
+            }
+        });
+
+        async function uploadPdfWithDetails() {
+            const menuItemId = document.getElementById('pdfMenuItem').value;
+            const fileInput = document.getElementById('pdfFileInput');
+            const file = fileInput.files[0];
+
+            // Validate inputs
+            if (!menuItemId) {
+                alert('Please select a menu item');
+                return;
+            }
+
+            if (!file) {
+                alert('Please select a PDF file');
+                return;
+            }
+
+            if (file.type !== 'application/pdf') {
+                alert('Please select a valid PDF file');
+                return;
+            }
+
+            try {
+                const formData = new FormData();
+                formData.append('menuPdf', file);
+
+                const response = await fetch(`${API_BASE_URL}/menu/${menuItemId}/pdf`, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    showSuccessMessage('PDF uploaded successfully!');
+                    closePdfModal();
+                    // Refresh the menu items data from the server first
+                    loadMenuItemsFromServer().then(() => {
+                        // Then refresh the display
+                        loadMenuItems();
+                    }).catch(error => {
+                        console.error('Error refreshing menu items after upload:', error);
+                    });
+                } else {
+                    console.error('Upload failed:', result);
+                    showErrorMessage('Failed to upload PDF: ' + (result.error || 'Unknown error'));
+                }
+            } catch (error) {
+                console.error('Error uploading PDF:', error);
+                showErrorMessage('Error uploading PDF. Please try again.');
+            }
+        }
+
+        // View PDF function
+        function viewPdf(menuItemId) {
+            const pdfUrl = `${API_BASE_URL}/menu/${menuItemId}/pdf`;
+            window.open(pdfUrl, '_blank');
+        }
+
+        // Delete PDF function
+        async function deletePdf(menuItemId) {
+            if (confirm('Are you sure you want to delete this PDF?')) {
+                try {
+                    const response = await fetch(`${API_BASE_URL}/menu/${menuItemId}/pdf`, {
+                        method: 'DELETE'
+                    });
+
+                    const result = await response.json();
+
+                    if (response.ok) {
+                        showSuccessMessage('PDF deleted successfully!');
+                        loadMenuItems(); // Refresh the menu items display
+                    } else {
+                        showErrorMessage('Failed to delete PDF: ' + result.error);
+                    }
+                } catch (error) {
+                    console.error('Error deleting PDF:', error);
+                    showErrorMessage('Error deleting PDF. Please try again.');
+                }
+            }
+        }
+
+        function showAddMenuItemModal() {
+            const modal = document.getElementById('bookingModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalBody = document.getElementById('modalBody');
+
+            modalTitle.textContent = 'Add New Menu Item';
+            modalBody.innerHTML = `
+                <div class="form-group">
+                    <label>Menu Title</label>
+                    <select id="itemMenuTitle" disabled>
+                        <option value="">Select Menu Title</option>
+                        <option value="Food Menu">Food Menu</option>
+                        <option value="Wine Menu">Wine Menu</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Name</label>
+                    <input type="text" id="itemName" placeholder="Enter item name" readonly disabled>
+                </div>
+                <div class="form-group">
+                    <label>Category</label>
+                    <select id="itemCategory" disabled>
+                        <option value="Appetizer">Appetizer</option>
+                        <option value="Main Course">Main Course</option>
+                        <option value="Dessert">Dessert</option>
+                        <option value="Beverage">Beverage</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Price</label>
+                    <input type="number" step="0.01" id="itemPrice" placeholder="Enter price" readonly disabled>
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="itemDescription" placeholder="Enter item description" readonly disabled></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Available</label>
+                    <select id="itemAvailable" disabled>
+                        <option value="true">Available</option>
+                        <option value="false">Unavailable</option>
+                    </select>
+                </div>
+                <div class="modal-actions">
+                    <button class="btn btn-primary" onclick="addMenuItem()">Add Item</button>
+                    <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                </div>
+            `;
+
+            modal.classList.add('active');
+        }
+
+        // PDF functionality completely removed - simplified menu management
+
+        function addMenuItem() {
+            const name = document.getElementById('itemName').value;
+            const menuTitle = document.getElementById('itemMenuTitle').value;
+            const category = document.getElementById('itemCategory').value;
+            const price = parseFloat(document.getElementById('itemPrice').value);
+            const description = document.getElementById('itemDescription').value;
+            const available = document.getElementById('itemAvailable').value === 'true';
+
+            if (name && category && price && description) {
+                const newItem = {
+                    id: menuItems.length + 1,
+                    name: name,
+                    menuTitle: menuTitle,
+                    category: category,
+                    price: price,
+                    description: description,
+                    available: available
+                };
+                menuItems.push(newItem);
+                loadMenuItems();
+                closeModal();
+            } else {
+                alert('Please fill in all fields');
+            }
+        }
+
+        function editMenuItem(id) {
+            const item = menuItems.find(i => i.id === id);
+            if (item) {
+                const modal = document.getElementById('bookingModal');
+                const modalTitle = document.getElementById('modalTitle');
+                const modalBody = document.getElementById('modalBody');
+
+                modalTitle.textContent = 'Edit Menu Item';
+                modalBody.innerHTML = `
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input type="text" id="itemName" value="${item.name}" readonly disabled>
+                    </div>
+                    <div class="form-group">
+                        <label>Category</label>
+                        <select id="itemCategory" disabled>
+                            <option value="Appetizer" ${item.category === 'Appetizer' ? 'selected' : ''}>Appetizer</option>
+                            <option value="Main Course" ${item.category === 'Main Course' ? 'selected' : ''}>Main Course</option>
+                            <option value="Dessert" ${item.category === 'Dessert' ? 'selected' : ''}>Dessert</option>
+                            <option value="Beverage" ${item.category === 'Beverage' ? 'selected' : ''}>Beverage</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Price</label>
+                        <input type="number" step="0.01" id="itemPrice" value="${item.price}" readonly disabled>
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea id="itemDescription" readonly disabled>${item.description}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Available</label>
+                        <select id="itemAvailable" disabled>
+                            <option value="true" ${item.available ? 'selected' : ''}>Available</option>
+                            <option value="false" ${!item.available ? 'selected' : ''}>Unavailable</option>
+                        </select>
+                    </div>
+                    <div class="modal-actions">
+                        <button class="btn btn-primary" onclick="updateMenuItem(${id})">Update Item</button>
+                        <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                    </div>
+                `;
+
+                modal.classList.add('active');
+            }
+        }
+
+        function updateMenuItem(id) {
+            const item = menuItems.find(i => i.id === id);
+            if (item) {
+                item.name = document.getElementById('itemName').value;
+                item.category = document.getElementById('itemCategory').value;
+                item.price = parseFloat(document.getElementById('itemPrice').value);
+                item.description = document.getElementById('itemDescription').value;
+                item.available = document.getElementById('itemAvailable').value === 'true';
+                loadMenuItems();
+                closeModal();
+            }
+        }
+
+        function deleteMenuItem(id) {
+            menuItems = menuItems.filter(i => i.id !== id);
+            loadMenuItems();
+        }
+
+        // Settings Functions
+
+        // Time slots configuration (matching booking form)
+        const timeSlots = [
+            { value: '07:30-08:30', label: '07:30-08:30', category: 'Petit-déjeuner (07:30 - 10:30)' },
+            { value: '08:30-09:30', label: '08:30-09:30', category: 'Petit-déjeuner (07:30 - 10:30)' },
+            { value: '09:30-10:30', label: '09:30-10:30', category: 'Petit-déjeuner (07:30 - 10:30)' },
+            { value: '12:00-13:00', label: '12:00-13:00', category: 'Déjeuner (12:00 - 14:30)' },
+            { value: '13:00-14:00', label: '13:00-14:00', category: 'Déjeuner (12:00 - 14:30)' },
+            { value: '13:30-14:30', label: '13:30-14:30', category: 'Déjeuner (12:00 - 14:30)' },
+            { value: '15:30-16:30', label: '15:30-16:30', category: 'Pause gourmande pour le thé (15:30 - 17:30)' },
+            { value: '16:30-17:30', label: '16:30-17:30', category: 'Pause gourmande pour le thé (15:30 - 17:30)' },
+            { value: '17:30-18:30', label: '17:30-18:30', category: 'After work convivial (17:30 - 19:30)' },
+            { value: '18:30-19:30', label: '18:30-19:30', category: 'After work convivial (17:30 - 19:30)' },
+            { value: '19:30-20:30', label: '19:30-20:30', category: 'Dîner raffiné (19:30 - 22:30)' },
+            { value: '20:30-21:30', label: '20:30-21:30', category: 'Dîner raffiné (19:30 - 22:30)' },
+            { value: '21:30-22:30', label: '21:30-22:30', category: 'Dîner raffiné (19:30 - 22:30)' }
+        ];
+
+        // Global time slot availability settings
+        let timeSlotAvailability = {};
+
+        // Load restaurant settings
+        async function loadRestaurantSettings() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/settings`);
+                const settings = await response.json();
+
+                document.getElementById('restaurantName').value = settings.name || '';
+                document.getElementById('restaurantAddress').value = settings.address || '';
+                document.getElementById('restaurantPhone').value = settings.phone || '';
+            } catch (error) {
+                console.error('Error loading restaurant settings:', error);
+                showNotification('Failed to load restaurant settings', 'error');
+            }
+        }
+
+        // Save restaurant settings
+        async function saveRestaurantSettings(event) {
+            event.preventDefault();
+
+            const settings = {
+                name: document.getElementById('restaurantName').value,
+                address: document.getElementById('restaurantAddress').value,
+                phone: document.getElementById('restaurantPhone').value
+            };
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/settings`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(settings)
+                });
+
+                if (response.ok) {
+                    showNotification('Restaurant settings saved successfully!', 'success');
+                } else {
+                    throw new Error('Failed to save settings');
+                }
+            } catch (error) {
+                console.error('Error saving restaurant settings:', error);
+                showNotification('Failed to save restaurant settings', 'error');
+            }
+        }
+
+        // Load time slot availability settings
+        async function loadTimeSlotSettings() {
+            try {
+                const dateInput = document.getElementById('settingsDate');
+                const container = document.querySelector('.time-slot-management');
+                const loading = document.getElementById('timeSlotsLoading');
+
+                // Show loading, hide container while fetching
+                if (loading) loading.style.display = 'block';
+                if (container) container.style.display = 'none';
+
+                // Build query for date-specific or global (no date param)
+                const q = (dateInput && dateInput.value) ? `?date=${dateInput.value}` : '';
+
+                // Fetch availability
+                const response = await fetch(`${API_BASE_URL}/time-slots/availability${q}`);
+                if (response.ok) {
+                    timeSlotAvailability = await response.json();
+                } else {
+                    // Fallback: initialize to all unavailable (ticked) to make it explicit
+                    timeSlots.forEach(slot => {
+                        timeSlotAvailability[slot.value] = false;
+                    });
+                }
+
+                // Render and show container
+                renderTimeSlots();
+                if (container) container.style.display = 'block';
+            } catch (error) {
+                console.error('Error loading time slot settings:', error);
+                // Fallback initialization
+                timeSlots.forEach(slot => {
+                    timeSlotAvailability[slot.value] = false;
+                });
+                renderTimeSlots();
+            } finally {
+                const loading = document.getElementById('timeSlotsLoading');
+                if (loading) loading.style.display = 'none';
+            }
+        }
+
+        // Render time slots in the admin interface
+        function renderTimeSlots() {
+            const container = document.getElementById('timeSlotsContainer');
+            if (!container) return;
+
+            // Group time slots by category
+            const categories = {};
+            timeSlots.forEach(slot => {
+                if (!categories[slot.category]) {
+                    categories[slot.category] = [];
+                }
+                categories[slot.category].push(slot);
+            });
+
+            let html = '';
+            Object.entries(categories).forEach(([category, slots]) => {
+                html += `<div style="margin-bottom: 20px;">
+                    <h4 style="color: #6366f1; margin-bottom: 12px; font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">${category}</h4>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 8px;">`;
+
+                slots.forEach(slot => {
+                    // Ticked slots are unavailable (false means unavailable)
+                    const isUnavailable = timeSlotAvailability[slot.value] === false;
+                    html += `
+                        <label style="display: flex; align-items: center; gap: 6px; padding: 8px; background: ${isUnavailable ? 'rgba(239, 68, 68, 0.1)' : 'rgba(16, 185, 129, 0.1)'}; border: 1px solid ${isUnavailable ? 'rgba(239, 68, 68, 0.3)' : 'rgba(16, 185, 129, 0.3)'}; border-radius: 4px; cursor: pointer; transition: all 0.2s ease; font-size: 13px;">
+                            <input type="checkbox" ${isUnavailable ? 'checked' : ''} onchange="toggleTimeSlot('${slot.value}')" style="margin: 0; cursor: pointer; transform: scale(0.9);">
+                            <span style="color: ${isUnavailable ? '#ef4444' : '#10b981'}; font-weight: 500; flex: 1;">${slot.label} (${isUnavailable ? 'Unavailable' : 'Available'})</span>
+                        </label>
+                    `;
+                });
+
+                html += `</div></div>`;
+            });
+
+            container.innerHTML = html;
+        }
+
+        // Toggle time slot availability
+        function toggleTimeSlot(slotValue) {
+            timeSlotAvailability[slotValue] = !timeSlotAvailability[slotValue];
+            renderTimeSlots(); // Re-render to update visual state
+        }
+
+        // Save time slot settings to API
+        async function saveTimeSlotSettings() {
+            try {
+                const dateInput = document.getElementById('settingsDate');
+                const q = (dateInput && dateInput.value) ? `?date=${dateInput.value}` : '';
+                const response = await fetch(`${API_BASE_URL}/time-slots/availability${q}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(timeSlotAvailability)
+                });
+
+                if (response.ok) {
+                    showNotification('Time slot settings saved successfully!', 'success');
+                } else {
+                    throw new Error('Failed to save time slot settings');
+                }
+            } catch (error) {
+                console.error('Error saving time slot settings:', error);
+                showNotification('Failed to save time slot settings', 'error');
+            }
+        }
+
+        // Initialize settings page when shown
+        function initializeSettingsPage() {
+            loadTimeSlotSettings();
+
+            // Add form submit handler
+            const dateInput = document.getElementById('settingsDate');
+            const useGlobalBtn = document.getElementById('useGlobalBtn');
+            const reloadBtn = document.getElementById('reloadSlotsBtn');
+            const saveBtn = document.getElementById('saveBtn');
+
+            // Bind listeners only once
+            if (!settingsInitBound) {
+                if (dateInput) dateInput.addEventListener('change', loadTimeSlotSettings);
+                if (useGlobalBtn) useGlobalBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    if (dateInput) {
+                        dateInput.value = '';
+                    }
+                    loadTimeSlotSettings();
+                });
+                if (reloadBtn) reloadBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    loadTimeSlotSettings();
+                });
+                if (saveBtn) saveBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    saveTimeSlotSettings();
+                });
+                settingsInitBound = true;
+            }
+        }
+
+        // API Integration Functions
+        async function loadAllData() {
+            try {
+                await Promise.all([
+                    loadBookings(),
+                    loadCustomersFromAPI(),
+                    loadMenuItemsFromServer(),
+                    loadAnalytics(),
+                    loadPdfs()
+                ]);
+
+                console.log('All data loaded. Menu items:', menuItems?.length || 0);
+                // Initialize calendar after data is loaded
+                generateCalendar();
+                
+                // Set up auto-refresh for bookings
+                setupAutoRefresh();
+            } catch (error) {
+                console.error('Error loading data:', error);
+            }
+        }
+        
+        // Auto-refresh functionality
+        function setupAutoRefresh() {
+            // Clear any existing interval
+            if (refreshInterval) {
+                clearInterval(refreshInterval);
+            }
+            
+            // Set up new interval to refresh bookings every 30 seconds
+            refreshInterval = setInterval(async () => {
+                console.log('Auto-refreshing bookings data...');
+                await loadBookings();
+                // Update UI based on current page
+                if (currentPage === 'calendar') {
+                    generateCalendar();
+                    if (selectedDate) {
+                        updateDayStatistics(selectedDate);
+                        generateTimeSlots(selectedDate);
+                    }
+                }
+            }, 30000); // 30 seconds
+        }
+
+        async function loadBookings() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/bookings`);
+                const data = await response.json();
+                // Process dates to ensure consistent format (YYYY-MM-DD)
+                bookings = (data || []).map(booking => {
+                    // Convert date to YYYY-MM-DD string format
+                    if (booking.date) {
+                        booking.date = new Date(booking.date).toISOString().split('T')[0];
+                    }
+                    return booking;
+                });
+                console.log('Loaded bookings:', bookings.length);
+            } catch (error) {
+                console.error('Error loading bookings:', error);
+                bookings = [];
+            }
+        }
+
+        async function loadCustomersFromAPI() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/customers`);
+                customers = await response.json();
+                
+                // Update the UI with the fetched data
+                displayCustomers(customers);
+
+                // Update customer count
+                document.getElementById('customerCount').textContent = `Total: ${customers.length} customers`;
+
+            } catch (error) {
+                console.error('Error loading customers:', error);
+                customers = [];
+                displayCustomers([]);
+            }
+        }
+
+        // Enhanced customer display with better styling
+        function displayCustomers(customerList) {
+                const tbody = document.getElementById('customersTableBody');
+                tbody.innerHTML = '';
+                
+            if (customerList.length === 0) {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                    <td colspan="5" style="text-align: center; padding: 40px; color: #888; font-style: italic;">
+                        <i style="font-size: 48px; margin-bottom: 15px; display: block;">👥</i>
+                        No customers found.
+                        <br><small>Customer data will appear here.</small>
+                        </td>
+                    `;
+                    tbody.appendChild(row);
+                return;
+            }
+
+            customerList.forEach(customer => {
+                const row = document.createElement('tr');
+                row.style.background = 'rgba(255, 255, 255, 0.02)';
+                row.style.transition = 'background-color 0.3s ease';
+
+                // Format phone number for better display
+                const phoneDisplay = customer.phone ? (customer.phone.startsWith('+') ? customer.phone : `+1 ${customer.phone}`) : 'Not provided';
+
+                // Format last visit date
+                const lastVisitDisplay = customer.lastVisit && customer.lastVisit !== 'Never'
+                    ? new Date(customer.lastVisit).toLocaleDateString()
+                    : 'Never';
+
+                row.innerHTML = `
+                    <td style="padding: 16px; font-weight: 500; color: #ffffff;">${customer.name}</td>
+                    <td style="padding: 16px; color: #ccc;">${customer.email}</td>
+                    <td style="padding: 16px; color: #ccc;">${phoneDisplay}</td>
+                    <td style="padding: 16px; text-align: center; color: #4CAF50; font-weight: 600;">${customer.visits || 0}</td>
+                    <td style="padding: 16px; color: #ccc;">${lastVisitDisplay}</td>
+                `;
+
+                // Add hover effect
+                row.addEventListener('mouseenter', () => {
+                    row.style.background = 'rgba(255, 255, 255, 0.05)';
+                });
+                row.addEventListener('mouseleave', () => {
+                    row.style.background = 'rgba(255, 255, 255, 0.02)';
+                });
+
+                tbody.appendChild(row);
+            });
+        }
+
+        // Update customer statistics
+        function updateCustomerStatistics(customerList) {
+            const totalCustomers = customerList.length;
+            const avgVisits = totalCustomers > 0
+                ? Math.round(customerList.reduce((sum, c) => sum + (c.visits || 0), 0) / totalCustomers * 10) / 10
+                : 0;
+
+            // Calculate recent customers (last 7 days)
+            const sevenDaysAgo = new Date();
+            sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+            const recentCustomers = customerList.filter(c =>
+                c.lastVisit && c.lastVisit !== 'Never' && new Date(c.lastVisit) >= sevenDaysAgo
+            ).length;
+
+            document.getElementById('totalCustomers').textContent = totalCustomers;
+            document.getElementById('avgVisits').textContent = avgVisits;
+            document.getElementById('recentCustomers').textContent = recentCustomers;
+            document.getElementById('customerCount').textContent = `Total: ${totalCustomers} customers`;
+        }
+
+        // Filter customers based on search
+        function filterCustomers() {
+            const searchTerm = document.getElementById('customerSearch').value.toLowerCase().trim();
+
+            if (!searchTerm) {
+                displayCustomers(customers);
+                document.getElementById('customerCount').textContent = `Total: ${customers.length} customers`;
+                return;
+            }
+
+            const filteredCustomers = customers.filter(customer =>
+                customer.name.toLowerCase().includes(searchTerm) ||
+                customer.email.toLowerCase().includes(searchTerm) ||
+                (customer.phone && customer.phone.includes(searchTerm))
+            );
+
+            displayCustomers(filteredCustomers);
+            document.getElementById('customerCount').textContent = `Filtered: ${filteredCustomers.length} of ${customers.length} customers`;
+        }
+
+        // Show add customer modal
+        function showAddCustomerModal() {
+            const modal = document.getElementById('bookingModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalBody = document.getElementById('modalBody');
+
+            modalTitle.textContent = 'Add New Customer';
+            modalBody.innerHTML = `
+                <div class="form-group">
+                    <label>Customer Name *</label>
+                    <input type="text" id="customerName" placeholder="Enter customer name" required readonly disabled>
+                </div>
+                <div class="form-group">
+                    <label>Email Address *</label>
+                    <input type="email" id="customerEmail" placeholder="Enter email address" required readonly disabled>
+                </div>
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <input type="tel" id="customerPhone" placeholder="Enter phone number" readonly disabled>
+                </div>
+                <div class="form-group">
+                    <label>Initial Visits</label>
+                    <input type="number" id="customerVisits" value="1" min="0" readonly disabled>
+                </div>
+                <div class="modal-actions">
+                    <button class="btn btn-primary" onclick="addCustomer()">Add Customer</button>
+                    <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                </div>
+            `;
+
+            modal.classList.add('active');
+        }
+
+        async function loadMenuItems() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/menu`);
+                menuItems = await response.json();
+            } catch (error) {
+                console.error('Error loading menu items:', error);
+            }
+        }
+
+        // Update existing functions to use API
+        async function updateBooking(date, oldTitle, bookingId = null) {
+            const time = document.getElementById('bookingTime').value;
+            const customerName = document.getElementById('customerName').value;
+            const customerEmail = document.getElementById('customerEmail').value;
+            const customerPhone = document.getElementById('customerPhone').value;
+            const partySize = document.getElementById('partySize').value;
+            const notes = document.getElementById('bookingNotes').value;
+
+            try {
+                // If bookingId is not provided, find it from the bookings array
+                let targetBookingId = bookingId;
+                if (!targetBookingId) {
+                    const dateString = new Date(date).toISOString().split('T')[0];
+                    const booking = bookings.find(b => b.date === dateString && `${b.customerName} (${b.guests})` === oldTitle);
+                    targetBookingId = booking?.id;
+                }
+
+                if (targetBookingId) {
+                    const response = await fetch(`${API_BASE_URL}/bookings/${targetBookingId}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            time: time,
+                            customerName: customerName,
+                            customerEmail: customerEmail,
+                            customerPhone: customerPhone,
+                            guests: parseInt(partySize),
+                            specialRequests: notes
+                        })
+                    });
+
+                    if (response.ok) {
+                        await loadBookings();
+                        generateCalendar();
+                        if (selectedDate) {
+                            generateTimeSlots(selectedDate);
+                        }
+                        closeModal();
+                    }
+                }
+            } catch (error) {
+                console.error('Error updating booking:', error);
+            }
+        }
+
+        async function deleteBooking(date, title, bookingId = null) {
+            try {
+                // If bookingId is not provided, find it from the bookings array
+                let targetBookingId = bookingId;
+                if (!targetBookingId) {
+                    const dateString = new Date(date).toISOString().split('T')[0];
+                    const booking = bookings.find(b => b.date === dateString && `${b.customerName} (${b.guests})` === title);
+                    targetBookingId = booking?.id;
+                }
+
+                if (targetBookingId) {
+                    const response = await fetch(`${API_BASE_URL}/bookings/${targetBookingId}`, {
+                        method: 'DELETE'
+                    });
+
+                    if (response.ok) {
+                        await loadBookings();
+                        generateCalendar();
+                        if (selectedDate) {
+                            generateTimeSlots(selectedDate);
+                        }
+                        closeModal();
+                    }
+                }
+            } catch (error) {
+                console.error('Error deleting booking:', error);
+            }
+        }
+
+        async function confirmBooking(bookingId, customerEmail, customerName, date, time, guests, tableNumber) {
+            console.log('Confirm booking called with:', { bookingId, customerEmail, customerName, date, time, guests, tableNumber });
+            try {
+                // Update booking status to confirmed
+                const response = await fetch(`${API_BASE_URL}/bookings/${bookingId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        status: 'confirmed'
+                    })
+                });
+
+                console.log('Booking update response:', response.status, response.ok);
+
+                if (response.ok) {
+                    console.log('Booking confirmed successfully');
+                    
+                    // Send confirmation email (currently disabled)
+                    try {
+                        await fetch(`${API_BASE_URL}/bookings/${bookingId}/send-confirmation`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                customerEmail,
+                                customerName,
+                                date,
+                                time,
+                                guests,
+                                tableNumber
+                            })
+                        });
+                        console.log('Email confirmation sent (or attempted)');
+                    } catch (emailError) {
+                        console.log('Email sending failed (expected):', emailError.message);
+                    }
+
+                    // Update customer management data with confirmed booking
+                    await updateCustomerAfterConfirmation(customerEmail, customerName, date);
+
+                    // Update the modal to show confirmed status
+                    document.getElementById('bookingStatus').value = 'confirmed';
+                    
+                    // Replace the confirm button with confirmed status
+                    const statusContainer = document.querySelector('.status-container');
+                    statusContainer.innerHTML = `
+                        <input type="text" value="confirmed" readonly id="bookingStatus">
+                        <span class="status-confirmed">✓ Confirmed</span>
+                    `;
+
+                    console.log('Booking confirmation process completed - modal updated');
+                } else {
+                    console.error('Failed to confirm booking:', response.status, response.statusText);
+                }
+            } catch (error) {
+                console.error('Error confirming booking:', error);
+            }
+        }
+
+        async function updateCustomerAfterConfirmation(customerEmail, customerName, bookingDate) {
+            try {
+                // Find existing customer or create new one
+                let customer = customers.find(c => c.email === customerEmail);
+
+                if (customer) {
+                    // Update existing customer - increment visit count
+                    const response = await fetch(`${API_BASE_URL}/customers/${customer.id}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            name: customerName,
+                            email: customerEmail,
+                            visits: (customer.visits || 0) + 1,
+                            lastVisit: bookingDate
+                        })
+                    });
+                    if (response.ok) {
+                        console.log('Customer updated after booking confirmation');
+                    }
+                } else {
+                    // Create new customer
+                    const response = await fetch(`${API_BASE_URL}/customers`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            name: customerName,
+                            email: customerEmail,
+                            phone: '', // Will be empty for now since we don't have phone in booking confirmation
+                            visits: 1,
+                            lastVisit: bookingDate
+                        })
+                    });
+                    if (response.ok) {
+                        console.log('New customer created after booking confirmation');
+                    }
+                }
+            } catch (error) {
+                console.error('Error updating customer after confirmation:', error);
+            }
+        }
+
+        async function addCustomer() {
+            const name = document.getElementById('customerName').value;
+            const email = document.getElementById('customerEmail').value;
+            const phone = document.getElementById('customerPhone').value;
+
+            if (name && email) {
+                try {
+                    const response = await fetch(`${API_BASE_URL}/customers`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            name: name,
+                            email: email,
+                            phone: phone || '',
+                            visits: parseInt(document.getElementById('customerVisits').value) || 1,
+                            lastVisit: new Date().toISOString().split('T')[0]
+                        })
+                    });
+
+                    if (response.ok) {
+                        await loadCustomersFromAPI();
+                        closeModal();
+                    } else {
+                        const errorData = await response.json();
+                        console.error('Failed to add customer:', errorData.error);
+                    }
+                } catch (error) {
+                    console.error('Error adding customer:', error);
+                }
+            } else {
+                console.log('Please fill in at least name and email fields');
+            }
+        }
+
+        async function updateCustomer(id) {
+            const customer = customers.find(c => c.id === id);
+            if (customer) {
+                try {
+                    const response = await fetch(`${API_BASE_URL}/customers/${id}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            name: document.getElementById('customerName').value,
+                            email: document.getElementById('customerEmail').value,
+                            phone: document.getElementById('customerPhone').value
+                        })
+                    });
+
+                    if (response.ok) {
+                        await loadCustomersFromAPI();
+                        loadCustomersFromAPI();
+                        closeModal();
+                    }
+                } catch (error) {
+                    console.error('Error updating customer:', error);
+                }
+            }
+        }
+
+        async function deleteCustomer(id) {
+            try {
+                const response = await fetch(`${API_BASE_URL}/customers/${id}`, {
+                    method: 'DELETE'
+                });
+
+                if (response.ok) {
+                    await loadCustomersFromAPI();
+                    loadCustomersFromAPI();
+                }
+            } catch (error) {
+                console.error('Error deleting customer:', error);
+            }
+        }
+
+        async function addMenuItem() {
+            const name = document.getElementById('itemName').value;
+            const category = document.getElementById('itemCategory').value;
+            const price = parseFloat(document.getElementById('itemPrice').value);
+            const description = document.getElementById('itemDescription').value;
+            const available = document.getElementById('itemAvailable').value === 'true';
+
+            if (name && category && price && description) {
+                try {
+                    const response = await fetch(`${API_BASE_URL}/menu`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            name: name,
+                            category: category,
+                            price: price,
+                            description: description,
+                            available: available
+                        })
+                    });
+
+                    if (response.ok) {
+                        await loadMenuItems();
+                        loadMenuItems();
+                        closeModal();
+                    }
+                } catch (error) {
+                    console.error('Error adding menu item:', error);
+                }
+            } else {
+                alert('Please fill in all fields');
+            }
+        }
+
+        async function updateMenuItem(id) {
+            const item = menuItems.find(i => i.id === id);
+            if (item) {
+                try {
+                    const response = await fetch(`${API_BASE_URL}/menu/${id}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            name: document.getElementById('itemName').value,
+                            category: document.getElementById('itemCategory').value,
+                            price: parseFloat(document.getElementById('itemPrice').value),
+                            description: document.getElementById('itemDescription').value,
+                            available: document.getElementById('itemAvailable').value === 'true'
+                        })
+                    });
+
+                    if (response.ok) {
+                        await loadMenuItems();
+                        loadMenuItems();
+                        closeModal();
+                    }
+                } catch (error) {
+                    console.error('Error updating menu item:', error);
+                }
+            }
+        }
+
+        async function deleteMenuItem(id) {
+            if (confirm('Are you sure you want to delete this menu item?')) {
+                try {
+                    const response = await fetch(`${API_BASE_URL}/menu/${id}`, {
+                        method: 'DELETE'
+                    });
+
+                    if (response.ok) {
+                        await loadMenuItems();
+                        loadMenuItems();
+                    }
+                } catch (error) {
+                    console.error('Error deleting menu item:', error);
+                }
+            }
+        }
+
+        // Initialize application
+        async function initializeApp() {
+            // First, check if user is authenticated and get user info
+            await checkAuthentication();
+            
+            // Load all data
+            await loadAllData();
+            
+            // Load and restore the last page
+            const lastPage = await loadLastPage();
+            if (lastPage && lastPage !== currentPage) {
+                // Update current page
+                currentPage = lastPage;
+                
+                // Hide all pages
+                const pages = document.querySelectorAll('.page');
+                pages.forEach(page => page.style.display = 'none');
+                
+                // Remove active class from all menu items
+                const menuItems = document.querySelectorAll('.sidebar-menu a');
+                menuItems.forEach(item => item.classList.remove('active'));
+                
+                // Show the last page
+                const targetPage = document.getElementById(lastPage + 'Page');
+                if (targetPage) {
+                    targetPage.style.display = 'block';
+                    
+                    // Add active class to the corresponding menu item
+                    const menuItem = document.querySelector(`[onclick="showPage('${lastPage}')"]`);
+                    if (menuItem) {
+                        menuItem.classList.add('active');
+                    }
+                }
+                
+                // Load page-specific data for the restored page
+                switch(lastPage) {
+                    case 'analytics':
+                        loadAnalytics();
+                        break;
+                    case 'customers':
+                        loadCustomersFromAPI();
+                        break;
+                case 'pdfs':
+                    loadPdfs();
+                    break;
+                case 'settings':
+                    initializeSettingsPage();
+                    break;
+                }
+            }
+        }
+
+        // Check authentication and get user info
+        async function checkAuthentication() {
+            try {
+                // Try to get user info from session/localStorage or make a request
+                // For now, we'll simulate getting user info - in a real app, this would come from login
+                const userFromStorage = localStorage.getItem('currentUser');
+                if (userFromStorage) {
+                    currentUser = JSON.parse(userFromStorage);
+                } else {
+                    // If no user in storage, create a default admin user for demo
+                    // In a real app, this would redirect to login
+                    currentUser = {
+                        id: 'admin_user_id', // This would be the actual user ID from login
+                        username: 'admin',
+                        role: 'admin',
+                        name: 'Admin User'
+                    };
+                }
+            } catch (error) {
+                console.error('Error checking authentication:', error);
+                // Fallback to default user
+                currentUser = {
+                    id: 'admin_user_id',
+                    username: 'admin',
+                    role: 'admin',
+                    name: 'Admin User'
+                };
+            }
+        }
+
+        // Initialize application
+        initializeApp();
+
+        // PDF Management Functions
+        let foodMenuPdfs = [];
+        let wineMenuPdfs = [];
+
+        // Load all PDFs
+        async function loadPdfs() {
+            try {
+                // Load food menu PDFs
+                const foodResponse = await fetch(`${API_BASE_URL}/menu-pdfs?menuTitle=Food Menu`);
+                if (foodResponse.ok) {
+                    foodMenuPdfs = await foodResponse.json();
+                    displayPdfs('food', foodMenuPdfs);
+                }
+
+                // Load wine menu PDFs
+                const wineResponse = await fetch(`${API_BASE_URL}/menu-pdfs?menuTitle=Wine Menu`);
+                if (wineResponse.ok) {
+                    wineMenuPdfs = await wineResponse.json();
+                    displayPdfs('wine', wineMenuPdfs);
+                }
+            } catch (error) {
+                console.error('Error loading PDFs:', error);
+            }
+        }
+
+        // Display PDFs in the respective lists
+        function displayPdfs(type, pdfs) {
+            const listElement = document.getElementById(type === 'food' ? 'foodPdfList' : 'winePdfList');
+            
+            // Clear the list
+            listElement.innerHTML = '';
+            
+            if (pdfs.length === 0) {
+                const noPdfsMsg = listElement.querySelector('.no-pdfs-message');
+                if (noPdfsMsg) {
+                    noPdfsMsg.style.display = 'block';
+                }
+                return;
+            }
+
+            // Hide the no PDFs message
+            const noPdfsMsg = listElement.querySelector('.no-pdfs-message');
+            if (noPdfsMsg) {
+                noPdfsMsg.style.display = 'none';
+            }
+            
+            // Create a list of PDFs
+            pdfs.forEach((pdf, index) => {
+                const pdfItem = document.createElement('div');
+                pdfItem.className = 'pdf-item';
+                pdfItem.style.display = 'flex';
+                pdfItem.style.flexDirection = 'column';
+                pdfItem.style.gap = '12px';
+                pdfItem.style.padding = '16px';
+                pdfItem.style.margin = '12px 0';
+                pdfItem.style.background = pdf.isActive
+                    ? 'linear-gradient(135deg, rgba(76, 175, 80, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%)'
+                    : 'linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%)';
+                pdfItem.style.borderRadius = '12px';
+                pdfItem.style.border = pdf.isActive ? '2px solid #4CAF50' : '1px solid #444';
+                pdfItem.style.transition = 'all 0.3s ease';
+                pdfItem.style.position = 'relative';
+
+                // Add active indicator
+                if (pdf.isActive) {
+                    pdfItem.style.boxShadow = '0 0 20px rgba(76, 175, 80, 0.3)';
+                    const activeBadge = document.createElement('div');
+                    activeBadge.innerHTML = '⭐ ACTIVE';
+                    activeBadge.style.position = 'absolute';
+                    activeBadge.style.top = '12px';
+                    activeBadge.style.right = '12px';
+                    activeBadge.style.background = '#4CAF50';
+                    activeBadge.style.color = 'white';
+                    activeBadge.style.padding = '4px 8px';
+                    activeBadge.style.borderRadius = '12px';
+                    activeBadge.style.fontSize = '10px';
+                    activeBadge.style.fontWeight = 'bold';
+                    activeBadge.style.textTransform = 'uppercase';
+                    pdfItem.appendChild(activeBadge);
+                }
+
+                const pdfHeader = document.createElement('div');
+                pdfHeader.style.display = 'flex';
+                pdfHeader.style.justifyContent = 'space-between';
+                pdfHeader.style.alignItems = 'flex-start';
+                
+                const pdfInfo = document.createElement('div');
+                pdfInfo.className = 'pdf-info';
+                pdfInfo.style.flex = '1';
+
+                const titleContainer = document.createElement('div');
+                titleContainer.style.display = 'flex';
+                titleContainer.style.alignItems = 'center';
+                titleContainer.style.gap = '8px';
+                titleContainer.style.marginBottom = '4px';
+
+                const pdfIcon = document.createElement('span');
+                pdfIcon.innerHTML = '📄';
+                pdfIcon.style.fontSize = '16px';
+
+                const pdfTitle = document.createElement('div');
+                pdfTitle.style.fontWeight = 'bold';
+                pdfTitle.style.fontSize = '14px';
+                pdfTitle.style.color = '#ffffff';
+                pdfTitle.textContent = pdf.title;
+
+                titleContainer.appendChild(pdfIcon);
+                titleContainer.appendChild(pdfTitle);
+
+                const pdfMeta = document.createElement('div');
+                pdfMeta.style.fontSize = '11px';
+                pdfMeta.style.color = '#aaa';
+                pdfMeta.style.marginBottom = '8px';
+                pdfMeta.innerHTML = `
+                    <div>📅 Uploaded: ${new Date(pdf.createdAt).toLocaleDateString()}</div>
+                    <div>📏 Size: ${formatFileSize(pdf.fileSize)}</div>
+                `;
+
+                pdfInfo.appendChild(titleContainer);
+                pdfInfo.appendChild(pdfMeta);
+                
+                const pdfActions = document.createElement('div');
+                pdfActions.className = 'pdf-actions';
+                pdfActions.style.display = 'flex';
+                pdfActions.style.gap = '8px';
+                pdfActions.style.flexWrap = 'wrap';
+                
+                // Preview button
+                const previewBtn = document.createElement('button');
+                previewBtn.className = 'btn btn-secondary btn-small';
+                previewBtn.innerHTML = '<i>👁️</i> Preview';
+                previewBtn.style.fontSize = '11px';
+                previewBtn.style.padding = '6px 10px';
+                previewBtn.onclick = () => previewPdf(pdf);
+                
+                // Set as main button (only show if not active)
+                const setMainBtn = document.createElement('button');
+                setMainBtn.className = 'btn btn-primary btn-small';
+                setMainBtn.innerHTML = '<i>✓</i> Set Main';
+                setMainBtn.style.fontSize = '11px';
+                setMainBtn.style.padding = '6px 10px';
+                setMainBtn.style.display = pdf.isActive ? 'none' : 'block';
+                setMainBtn.onclick = () => setAsMainPdf(pdf._id, type);
+
+                // Deactivate button (only show if active)
+                const deactivateBtn = document.createElement('button');
+                deactivateBtn.className = 'btn btn-warning btn-small';
+                deactivateBtn.innerHTML = '<i>✗</i> Remove from Main';
+                deactivateBtn.style.fontSize = '11px';
+                deactivateBtn.style.padding = '6px 10px';
+                deactivateBtn.style.display = pdf.isActive ? 'block' : 'none';
+                deactivateBtn.onclick = () => deactivatePdf(pdf._id, type);
+                
+                // Delete button
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'btn btn-danger btn-small';
+                deleteBtn.innerHTML = '<i>🗑️</i> Delete';
+                deleteBtn.style.fontSize = '11px';
+                deleteBtn.style.padding = '6px 10px';
+                deleteBtn.onclick = () => deletePdf(pdf._id, type);
+                
+                pdfActions.appendChild(previewBtn);
+                pdfActions.appendChild(setMainBtn);
+                pdfActions.appendChild(deactivateBtn);
+                pdfActions.appendChild(deleteBtn);
+                
+                pdfHeader.appendChild(pdfInfo);
+                pdfItem.appendChild(pdfHeader);
+                pdfItem.appendChild(pdfActions);
+                
+                listElement.appendChild(pdfItem);
+            });
+        }
+
+        // Preview PDF
+        function previewPdf(pdf) {
+            // Create a modal for PDF preview
+            const previewModal = document.createElement('div');
+            previewModal.className = 'modal';
+            previewModal.id = 'pdfPreviewModal';
+            previewModal.style.display = 'block';
+            
+            const modalContent = document.createElement('div');
+            modalContent.className = 'modal-content';
+            modalContent.style.width = '80%';
+            modalContent.style.height = '80%';
+            modalContent.style.maxWidth = '1000px';
+            
+            const modalHeader = document.createElement('div');
+            modalHeader.className = 'modal-header';
+            modalHeader.innerHTML = `
+                <div class="modal-title">Preview: ${pdf.title}</div>
+                <button class="close-modal" onclick="document.getElementById('pdfPreviewModal').remove()">&times;</button>
+            `;
+            
+            const modalBody = document.createElement('div');
+            modalBody.style.height = 'calc(100% - 60px)';
+            modalBody.innerHTML = `
+                <iframe src="/uploads/${pdf.filename}" style="width: 100%; height: 100%; border: none;"></iframe>
+            `;
+            
+            modalContent.appendChild(modalHeader);
+            modalContent.appendChild(modalBody);
+            previewModal.appendChild(modalContent);
+            
+            document.body.appendChild(previewModal);
+            
+            // Close modal when clicking outside
+            previewModal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    previewModal.remove();
+                }
+            });
+        }
+
+        // Set PDF as main
+        async function setAsMainPdf(pdfId, type) {
+            try {
+                const menuTitle = type === 'food' ? 'Food Menu' : 'Wine Menu';
+                const response = await fetch(`${API_BASE_URL}/menu-pdfs/${pdfId}/set-active`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer admin-token'
+                    },
+                    body: JSON.stringify({ menuTitle })
+                });
+                
+                if (response.ok) {
+                    // Reload PDFs to update the display
+                    await loadPdfs();
+                } else {
+                    const errorData = await response.json();
+                    console.error('Failed to set PDF as main:', errorData.error);
+                }
+            } catch (error) {
+                console.error('Error setting PDF as main:', error);
+            }
+        }
+
+        // Deactivate PDF (Remove from Main)
+        async function deactivatePdf(pdfId, type) {
+            try {
+                const response = await fetch(`${API_BASE_URL}/menu-pdfs/${pdfId}/deactivate`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': 'Bearer admin-token'
+                    }
+                });
+
+                if (response.ok) {
+                    // Reload PDFs to update the display
+                    await loadPdfs();
+                } else {
+                    const errorData = await response.json();
+                    console.error('Failed to remove PDF from main:', errorData.error);
+                }
+            } catch (error) {
+                console.error('Error deactivating PDF:', error);
+            }
+        }
+
+        // Delete PDF
+        async function deletePdf(pdfId, type) {
+            try {
+                const response = await fetch(`${API_BASE_URL}/menu-pdfs/${pdfId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': 'Bearer admin-token'
+                    }
+                });
+                
+                if (response.ok) {
+                    // Reload PDFs to update the display
+                    await loadPdfs();
+                } else {
+                    const errorData = await response.json();
+                    console.error('Failed to delete PDF:', errorData.error);
+                }
+            } catch (error) {
+                console.error('Error deleting PDF:', error);
+            }
+        }
+
+        // Upload PDF
+        async function uploadPdf(type) {
+            const fileInput = document.getElementById(type === 'food' ? 'foodMenuPdfUpload' : 'wineMenuPdfUpload');
+            const file = fileInput.files[0];
+            const uploadBtn = fileInput.parentElement.querySelector('.upload-btn');
+            const statusDiv = document.getElementById(type === 'food' ? 'foodUploadStatus' : 'wineUploadStatus');
+            
+            if (!file) {
+                showStatus(statusDiv, '❌ Please select a PDF file', 'error');
+                return;
+            }
+            
+            if (file.type !== 'application/pdf') {
+                showStatus(statusDiv, '❌ Please select a valid PDF file', 'error');
+                return;
+            }
+
+            if (file.size > 10 * 1024 * 1024) {
+                showStatus(statusDiv, '❌ File size must be less than 10MB', 'error');
+                return;
+            }
+
+            // Show uploading state
+            uploadBtn.classList.add('uploading');
+            uploadBtn.innerHTML = '<i>⏳</i> Uploading...';
+            showStatus(statusDiv, '📤 Uploading PDF...', 'info');
+            
+            const formData = new FormData();
+            formData.append('menuPdf', file);
+            
+            try {
+                const menuId = type === 'food' ? 'food_menu' : 'wine_menu';
+                const response = await fetch(`${API_BASE_URL}/menu/${menuId}/pdf`, {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                if (response.ok) {
+                    // Reload PDFs to update the display
+                    await loadPdfs();
+                    uploadBtn.classList.remove('uploading');
+                    uploadBtn.innerHTML = '<i>📄</i> Upload ' + type.charAt(0).toUpperCase() + type.slice(1) + ' Menu PDF';
+                    showStatus(statusDiv, '✅ PDF uploaded successfully!', 'success');
+                    fileInput.value = ''; // Clear the file input
+
+                    // Clear status after 3 seconds
+                    setTimeout(() => {
+                        statusDiv.innerHTML = '';
+                    }, 3000);
+                } else {
+                    const errorData = await response.json();
+                    uploadBtn.classList.remove('uploading');
+                    uploadBtn.innerHTML = '<i>📄</i> Upload ' + type.charAt(0).toUpperCase() + type.slice(1) + ' Menu PDF';
+                    showStatus(statusDiv, `❌ Upload failed: ${errorData.error || 'Unknown error'}`, 'error');
+                }
+            } catch (error) {
+                console.error('Error uploading PDF:', error);
+                uploadBtn.classList.remove('uploading');
+                uploadBtn.innerHTML = '<i>📄</i> Upload ' + type.charAt(0).toUpperCase() + type.slice(1) + ' Menu PDF';
+                showStatus(statusDiv, '❌ Network error occurred', 'error');
+            }
+        }
+
+        // Helper function to show status messages
+        function showStatus(element, message, type) {
+            element.innerHTML = message;
+            element.style.color = type === 'success' ? '#4CAF50' : type === 'error' ? '#f44336' : '#2196F3';
+            element.style.fontSize = '12px';
+        }
+
+        // Add event listeners for file inputs
+        document.getElementById('foodMenuPdfUpload').addEventListener('change', () => uploadPdf('food'));
+        document.getElementById('wineMenuPdfUpload').addEventListener('change', () => uploadPdf('wine'));
+
+        // Update showPage function to include PDF page and settings page
+        const originalShowPage = showPage;
+        showPage = function(page) {
+            originalShowPage(page);
+            if (page === 'pdfs') {
+                loadPdfs();
+            } else if (page === 'settings') {
+                initializeSettingsPage();
+            }
+        };
+
+        // Close modal when clicking outside
+        document.getElementById('bookingModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        // Close PDF modal when clicking outside
+        document.getElementById('pdfUploadModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closePdfModal();
+            }
+        });
+
+    </script>
+</body>
+</html>
