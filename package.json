@@ -1,0 +1,52 @@
+{
+  "name": "restaurant-management-system",
+  "version": "1.0.0",
+  "description": "Restaurant booking and management system",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server-mongodb.js",
+    "dev": "nodemon server-mongodb.js",
+    "start:mongo": "node server-mongodb.js",
+    "dev:mongo": "nodemon server-mongodb.js",
+    "start:web": "node server.js",
+    "dev:web": "nodemon server.js",
+    "start:both": "concurrently -k \"node server-mongodb.js\" \"node server.js\"",
+    "dev:both": "concurrently -k \"nodemon server-mongodb.js\" \"nodemon server.js\"",
+    "seed": "node scripts/seed.js",
+    "test:db": "node scripts/test-connection.js",
+    "open:admin": "wait-on tcp:localhost:3000 && start \"\" http://localhost:3000/admin-login.html",
+    "open:site": "wait-on tcp:localhost:3000 && start \"\" http://localhost:3000/index.html",
+    "dev:all": "concurrently -k \"npm:dev\" \"npm:open:admin\"",
+    "start:all": "concurrently -k \"npm:start\" \"npm:open:admin\"",
+    "start:complete": "concurrently \"nodemon server-mongodb.js\" \"wait-on -l tcp:localhost:3000 && start http://localhost:3000/index.html && start http://localhost:3000/admin-login.html\"",
+    "dev:complete": "concurrently \"node server-mongodb.js\" \"wait-on -l tcp:localhost:3000 && start http://localhost:3000/index.html && start http://localhost:3000/admin-login.html\""
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^0.5.0",
+    "@supabase/supabase-js": "^2.58.0",
+    "bcryptjs": "^3.0.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "mongodb": "^6.20.0",
+    "mongoose": "^8.19.0",
+    "multer": "^2.0.2",
+    "nodemailer": "^7.0.7"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.19",
+    "concurrently": "^9.1.0",
+    "nodemon": "^3.0.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3",
+    "wait-on": "^8.0.0"
+  },
+  "keywords": [
+    "restaurant",
+    "booking",
+    "management",
+    "admin"
+  ],
+  "author": "Restaurant Management Team",
+  "license": "MIT"
+}
